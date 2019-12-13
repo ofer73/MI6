@@ -19,7 +19,7 @@ public class Future<T> {
 	public Future() {
 		result=null;
 	}
-	
+	//a
 	/**
      * retrieves the result the Future object holds if it has been resolved.
      * This is a blocking method! It waits for the computation in case it has
