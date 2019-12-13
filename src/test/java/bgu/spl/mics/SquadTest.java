@@ -19,7 +19,7 @@ public class SquadTest {
 
     @Test
     public void testLoadAndNames(){
-        //TODO: change this test and add more tests :)
+
         Agent[] agentArr = cArr();
         List<String> ls = cList(agentArr);
         sq.load(agentArr);
@@ -30,7 +30,7 @@ public class SquadTest {
 
     @Test
     public void testRelease(){
-        //TODO: change this test and add more tests :)
+
         Agent[] agentArr = cArr();
         List<String> ls = cList(agentArr);
         sq.load(agentArr);
@@ -43,7 +43,7 @@ public class SquadTest {
 
     @Test
     public void testSend(){
-        //TODO: change this test and add more tests :)
+
         Agent[] agentArr = cArr();
         List<String> ls = cList(agentArr);
         sq.load(agentArr);
