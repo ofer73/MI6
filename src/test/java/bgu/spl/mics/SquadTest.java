@@ -14,7 +14,7 @@ public class SquadTest {
     private Squad sq;
     @BeforeEach
     public void setUp(){
-        sq = new Squad();
+        sq = Squad.getInstance();
     }
 
     @Test
