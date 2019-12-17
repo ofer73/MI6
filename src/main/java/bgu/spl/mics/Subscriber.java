@@ -17,7 +17,8 @@ package bgu.spl.mics;
  */
 public abstract class Subscriber extends RunnableSubPub {
     private boolean terminated = false;
-    private MessageBroker mb;
+    private MessageBroker mb= MessageBrokerImpl.getInstance();
+    private
 
     /**
      * @param name the Subscriber name (used mainly for debugging purposes -
@@ -25,7 +26,6 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     public Subscriber(String name) {
         super(name);
-        mb = MessageBrokerImpl.getInstance();
     }
 
     /**
