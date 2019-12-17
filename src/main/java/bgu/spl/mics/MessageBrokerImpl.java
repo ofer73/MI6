@@ -1,11 +1,8 @@
 package bgu.spl.mics;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -14,22 +11,28 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBrokerImpl implements MessageBroker {
-	private static MessageBrokerImpl instance = null;
+	private static MessageBrokerImpl instance = null; // check if necessary
 	private ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>> messageMap;
-	private ConcurrentHashMap<Subscriber, ConcurrentLinkedQueue<Message>> mytopisMap;
+	private ConcurrentHashMap<Subscriber, ConcurrentLinkedQueue<Message>> mytopicsMap;
 	private  ConcurrentHashMap<Class<? extends Event>, ConcurrentLinkedQueue<Subscriber>> eventMap;
 	private  ConcurrentHashMap<Class<? extends Broadcast>,ConcurrentLinkedQueue<Subscriber>> broadcastMap;
 	private ConcurrentHashMap<Event,Future> FutureMap;
+
+
+
+	/**
+	 * A wrapper class for the singleton (@MessageBroker),
+	 * to handle a valid and thread-safe initialize for the singleton (@MessageBroker)
+	 */
+	private static class MsbHolder {
+		private static MessageBroker instance = new MessageBrokerImpl();
+	}
+
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static MessageBroker getInstance() {
-		synchronized (instance){
-			if (instance == null) {
-				instance = new MessageBrokerImpl();
-			}
-			return instance;
-		}
+		return MsbHolder.instance;
 	}
 
 	@Override
@@ -55,8 +58,12 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		// TODO Auto-generated method stub
-
+		// TODO check if it is a thread-safe function, and sync is not necessary here:
+		Iterator iterator = broadcastMap.get(b.getClass()).iterator();
+		while (iterator.hasNext()){
+			Subscriber s = (Subscriber) iterator.next();
+			messageMap.get(s).add(b);
+		}
 	}
 
 	
@@ -69,7 +76,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void register(Subscriber m) {
 		messageMap.putIfAbsent(m,new LinkedBlockingQueue<>());
-		mytopisMap.putIfAbsent(m,new ConcurrentLinkedQueue<>());
+		mytopicsMap.putIfAbsent(m,new ConcurrentLinkedQueue<>());
 
 
 	}
@@ -77,24 +84,24 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void unregister(Subscriber m) {
 		messageMap.remove(m); // delete m's message queue
-		for(Iterator it=mytopisMap.get(m).iterator();it.hasNext();){ //for each one of m's topics, delete m from topics q
+		for(Iterator it = mytopicsMap.get(m).iterator(); it.hasNext();){ //for each one of m's topics, delete m from topics q
 			Object i=it.next();
 			if(i instanceof Broadcast)
-				broadcastMap.get(i.getClass()).remove(m);
+				broadcastMap.get(i.getClass()).remove(m); //is it the right syntax?
 
 			else
 				eventMap.get(i.getClass()).remove(m);
 
 		}
-		mytopisMap.remove(m); //delete m's topic queue
+		mytopicsMap.remove(m); //delete m's topic queue
 	}
 
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
-		// TODO Auto-generated method stub
-		return null;
+		if(!messageMap.containsKey(m))
+			throw new IllegalStateException();
+		return messageMap.get(m).take();
+		//return the head of m's personal queue
+		//if doesn't exist, take() blocks m's wrapping thread
 	}
-
-	
-
 }
