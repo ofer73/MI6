@@ -1,4 +1,7 @@
 package bgu.spl.mics.application.passiveObjects;
+import bgu.spl.mics.MessageBroker;
+import bgu.spl.mics.MessageBrokerImpl;
+
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +18,11 @@ public class Squad {
 	/**
 	 * Retrieves the single instance of this class.
 	 */
+	private static class SquadHolder {
+		private static Squad instance = new Squad();
+	}
 	public static Squad getInstance() {
-		//TODO: Implement this
-		return null;
+		return SquadHolder.instance;
 	}
 
 	/**
@@ -51,8 +56,34 @@ public class Squad {
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
 	public boolean getAgents(List<String> serials){
-		// TODO Implement this
-		return false;
+
+		for(String s:serials){
+			if(!agents.containsKey(s)) //check that squad contains all agents
+				return false;
+		}
+			synchronized (this) {
+				boolean allavailable = false;
+				while (!allavailable) {
+					allavailable=true;
+					for (String s : serials) { //check if all agents are available to acquire
+						if (!agents.get(s).isAvailable()) {
+							allavailable = false;
+							break;
+						}
+					}
+					if(!allavailable) { //if not we will wait
+						try {
+							this.wait();
+						}catch (InterruptedException e){}
+					}
+					else{ //else acquire all
+						for (String s : serials){
+							agents.get(s).acquire();
+						}
+					}
+				}
+			}
+			return true;
 	}
 
     /**

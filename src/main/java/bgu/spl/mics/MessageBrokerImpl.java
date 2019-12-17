@@ -37,25 +37,28 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
-		// TODO Auto-generated method stub
-		myTopicsMap.get(m).add(type);
+		// TODO check is the next line thread-safe
+		eventMap.putIfAbsent(type, new ConcurrentLinkedQueue<>()); //check
 		eventMap.get(type).add(m);
+		myTopicsMap.get(m).add(type);
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
 		// TODO Auto-generated method stub
+		broadcastMap.putIfAbsent(type, new ConcurrentLinkedQueue<>());
 		myTopicsMap.get(m).add(type);
 		broadcastMap.get(type).add(m);
+
 
 
 	}
 
 	@Override
 	public <T> void complete(Event<T> e, T result) {
-		if(e!=null&&result!=null){
+		if(e!=null&&result!=null&&futureMap.containsKey(e)){
 			futureMap.get(e).resolve(result);
-			futureMap.get(e).notifyAll(); //Alon: why not notifyAll ?
+			futureMap.get(e).notifyAll();
 			futureMap.remove(e);
 		}
 	}

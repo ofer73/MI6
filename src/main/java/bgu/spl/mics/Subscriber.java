@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class Subscriber extends RunnableSubPub {
     private boolean terminated = false;
     private MessageBroker mb= MessageBrokerImpl.getInstance();
-    private ConcurrentHashMap< Class,Callback> callbackMap;
+    private ConcurrentHashMap< Class,Callback> callbackMap=new ConcurrentHashMap<>();
 
     /**
      * @param name the Subscriber name (used mainly for debugging purposes -
@@ -53,8 +53,10 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
         //TODO: implement this.
-        callbackMap.putIfAbsent(type, callback);
-        mb.subscribeEvent(type, s);
+        if(callback!=null && type!=null) {
+            callbackMap.putIfAbsent(type, callback);
+            mb.subscribeEvent(type, this);
+        }
     }
 
     /**
@@ -78,7 +80,10 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-        //TODO: implement this.
+        if(callback!=null && type!=null) {
+            callbackMap.putIfAbsent(type, callback);
+            mb.subscribeBroadcast(type, this);
+        }
     }
 
     /**
@@ -92,7 +97,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-        //TODO: implement this.
+        mb.complete(e,result);
     }
 
     /**
@@ -112,6 +117,12 @@ public abstract class Subscriber extends RunnableSubPub {
         initialize();
         while (!terminated) {
             System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
+            try {
+                Message newMessage = mb.awaitMessage(this);
+                Callback callback = callbackMap.get(newMessage.getClass());
+                //finds the callback that defined to handle such message
+                callback.call(newMessage);
+            } catch (InterruptedException e) { }
         }
     }
 
