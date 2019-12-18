@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.passiveObjects;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Passive data-object representing a information about an agent in MI6.
@@ -10,12 +11,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Agent {
 	private AtomicBoolean available = new AtomicBoolean(true);
+	private AtomicReference<String> name = new AtomicReference("");
+	private AtomicReference<String> serial = new AtomicReference("");
+
+
 
 	/**
 	 * Sets the serial number of an agent.
 	 */
 	public void setSerialNumber(String serialNumber) {
-		// TODO Implement this
+		serial.compareAndSet(serial.get(),serialNumber);
 	}
 
 	/**
@@ -24,15 +29,14 @@ public class Agent {
      * @return The serial number of an agent.
      */
 	public String getSerialNumber() {
-		// TODO Implement this
-		return null;
+		return serial.get();
 	}
 
 	/**
 	 * Sets the name of the agent.
 	 */
 	public void setName(String name) {
-		// TODO Implement this
+		this.name.compareAndSet(this.name.get(),name);
 	}
 
 	/**
@@ -41,8 +45,7 @@ public class Agent {
      * @return the name of the agent.
      */
 	public String getName() {
-		// TODO Implement this
-		return null;
+		return name.get();
 	}
 
 	/**
@@ -51,15 +54,14 @@ public class Agent {
      * @return if the agent is available.
      */
 	public boolean isAvailable() {
-		// TODO Implement this
-		return false;
+		return available.get();
 	}
 
 	/**
 	 * Acquires an agent.
 	 */
 	public void acquire(){
-		//if(!available.compareAndSet(false,true))
+		available.compareAndSet(false,true);
 
 	}
 
@@ -67,6 +69,6 @@ public class Agent {
 	 * Releases an agent.
 	 */
 	public void release(){
-		// TODO Implement this
+		available.compareAndSet(true,false);
 	}
 }

@@ -39,7 +39,11 @@ public class Squad {
 	 * Releases agents.
 	 */
 	public void releaseAgents(List<String> serials){
-		// TODO Implement this
+		synchronized (this) {
+			for (String s : serials)
+				agents.get(s).release();
+			this.notifyAll();
+		}
 	}
 
 	/**
@@ -47,7 +51,12 @@ public class Squad {
 	 * @param time   time ticks to sleep
 	 */
 	public void sendAgents(List<String> serials, int time){
-		// TODO Implement this
+		getAgents(serials);
+		try {
+			Thread.currentThread().sleep(time);
+		}
+		catch (InterruptedException e){}
+		releaseAgents(serials);
 	}
 
 	/**

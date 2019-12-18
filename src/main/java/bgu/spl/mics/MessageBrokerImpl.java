@@ -76,17 +76,17 @@ public class MessageBrokerImpl implements MessageBroker {
 	
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
-		// TODO check if thread safe or FIX
-		Subscriber s = eventMap.get(e.getClass()).poll(); //remove head
-		if ( s== null) { //means no-one subscribed to solve such event
-			return null;
-		}
-		else{
-			messageMap.get(s).offer(e);
-			Future f=new Future<>();
-			futureMap.put(e,f);
-			eventMap.get(e.getClass()).add(s);//add s to the end of queue
-			return f;
+		synchronized(eventMap.get(e.getClass())) {//lock e's subscriber queue
+			Subscriber s = eventMap.get(e.getClass()).poll(); //remove head
+			if (s == null) { //means no-one subscribed to solve such event
+				return null;
+			} else {
+				messageMap.get(s).offer(e);
+				Future f = new Future<>();
+				futureMap.put(e, f);
+				eventMap.get(e.getClass()).add(s);//add s to the end of queue
+				return f;
+			}
 		}
 	}
 
@@ -100,7 +100,7 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void unregister(Subscriber m) {
-		//TODO check if the change of the signuture from message to a class type screw the function, or if this function is very BAD
+		//TODO check if the change of the signature from message to a class type screw the function, or if this function is very BAD
 		//update: it doesn't work now, need to be fixed
 
 		messageMap.remove(m); // delete m's message queue
