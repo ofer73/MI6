@@ -1,6 +1,8 @@
 package bgu.spl.mics.application.passiveObjects;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Passive object representing the diary where all reports are stored.

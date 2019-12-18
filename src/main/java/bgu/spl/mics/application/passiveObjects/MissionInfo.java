@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class MissionInfo {
 
+
     /**
      * Sets the name of the mission.
      */

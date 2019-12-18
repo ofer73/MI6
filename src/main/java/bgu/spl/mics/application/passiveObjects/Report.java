@@ -9,49 +9,58 @@ import java.util.List;
  * You may add ONLY private fields and methods to this class.
  */
 public class Report {
+	private String missionname;
+	private int M;
+	private int Moneypenny;
+	private List<String> agentserials;
+	private List<String> agentnames;
+	private String gadget;
+	private int timeIssued;
+	private int QTime;
+	private int timeCreated;
+
+
 	/**
      * Retrieves the mission name.
      */
 	public String getMissionName() {
-		// TODO Implement this
-		return null;
+
+		return missionname;
 	}
 
 	/**
 	 * Sets the mission name.
 	 */
 	public void setMissionName(String missionName) {
-		// TODO Implement this
+		this.missionname=missionName;
 	}
 
 	/**
 	 * Retrieves the M's id.
 	 */
 	public int getM() {
-		// TODO Implement this
-		return 0;
+		return M;
 	}
 
 	/**
 	 * Sets the M's id.
 	 */
 	public void setM(int m) {
-		// TODO Implement this
+		this.M=m;
 	}
 
 	/**
 	 * Retrieves the Moneypenny's id.
 	 */
 	public int getMoneypenny() {
-		// TODO Implement this
-		return 0;
+		return Moneypenny;
 	}
 
 	/**
 	 * Sets the Moneypenny's id.
 	 */
 	public void setMoneypenny(int moneypenny) {
-		// TODO Implement this
+		this.Moneypenny = moneypenny;
 	}
 
 	/**
@@ -60,15 +69,15 @@ public class Report {
 	 * @return The serial numbers of the agents.
 	 */
 	public List<String> getAgentsSerialNumbersNumber() {
-		// TODO Implement this
-		return null;
+
+		return agentserials;
 	}
 
 	/**
 	 * Sets the serial numbers of the agents.
 	 */
 	public void setAgentsSerialNumbersNumber(List<String> agentsSerialNumbersNumber) {
-		// TODO Implement this
+		this.agentserials = agentsSerialNumbersNumber;
 	}
 
 	/**
@@ -77,15 +86,14 @@ public class Report {
 	 * @return The agents names.
 	 */
 	public List<String> getAgentsNames() {
-		// TODO Implement this
-		return null;
+		return agentnames;
 	}
 
 	/**
 	 * Sets the agents names.
 	 */
 	public void setAgentsNames(List<String> agentsNames) {
-		// TODO Implement this
+		this.agentnames=agentsNames;
 	}
 
 	/**
@@ -94,59 +102,58 @@ public class Report {
 	 * @return the name of the gadget.
 	 */
 	public String getGadgetName() {
-		// TODO Implement this
-		return null;
+		return gadget;
 	}
 
 	/**
 	 * Sets the name of the gadget.
 	 */
 	public void setGadgetName(String gadgetName) {
-		// TODO Implement this
+		this.gadget = gadgetName;
 	}
 
 	/**
 	 * Retrieves the time-tick in which Q Received the GadgetAvailableEvent for that mission.
 	 */
 	public int getQTime() {
-		// TODO Implement this
-		return 0;
+
+		return QTime;
 	}
 
 	/**
 	 * Sets the time-tick in which Q Received the GadgetAvailableEvent for that mission.
 	 */
 	public void setQTime(int qTime) {
-		// TODO Implement this
+		this.QTime = qTime;
 	}
 
 	/**
 	 * Retrieves the time when the mission was sent by an Intelligence Publisher.
 	 */
 	public int getTimeIssued() {
-		// TODO Implement this
-		return 0;
+
+		return timeIssued;
 	}
 
 	/**
 	 * Sets the time when the mission was sent by an Intelligence Publisher.
 	 */
 	public void setTimeIssued(int timeIssued) {
-		// TODO Implement this
+		this.timeIssued = timeIssued;
 	}
 
 	/**
 	 * Retrieves the time-tick when the report has been created.
 	 */
 	public int getTimeCreated() {
-		// TODO Implement this
-		return 0;
+
+		return timeCreated;
 	}
 
 	/**
 	 * Sets the time-tick when the report has been created.
 	 */
 	public void setTimeCreated(int timeCreated) {
-		// TODO Implement this
+		this.timeCreated = timeCreated;
 	}
 }
