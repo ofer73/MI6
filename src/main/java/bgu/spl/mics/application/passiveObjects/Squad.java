@@ -2,8 +2,10 @@ package bgu.spl.mics.application.passiveObjects;
 import bgu.spl.mics.MessageBroker;
 import bgu.spl.mics.MessageBrokerImpl;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 /**
  * Passive data-object representing a information about an agent in MI6.
@@ -13,7 +15,7 @@ import java.util.Map;
  */
 public class Squad {
 
-	private Map<String, Agent> agents;
+	private Map<String, Agent> agents; //key (string) = serial number
 
 	/**
 	 * Retrieves the single instance of this class.
@@ -32,7 +34,10 @@ public class Squad {
 	 * 						of the squad.
 	 */
 	public void load (Agent[] agents) {
-		// TODO Implement this
+		// adding every agent in Agent to the map, the key is serial number
+		for(Agent newAgent : agents){
+			this.agents.put(newAgent.getSerialNumber(), newAgent);
+		}
 	}
 
 	/**
@@ -101,8 +106,11 @@ public class Squad {
      * @return a list of the names of the agents with the specified serials.
      */
     public List<String> getAgentsNames(List<String> serials){
-        // TODO Implement this
-	    return null;
+		List<String> newList = new Vector<>();
+		for (String serialNumber : serials){
+			newList.add(this.agents.get(serialNumber).getName()); //adding the name of agent with the serialNumber
+		}
+	    return newList;
     }
 
 }

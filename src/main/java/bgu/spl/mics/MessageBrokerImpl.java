@@ -104,15 +104,18 @@ public class MessageBrokerImpl implements MessageBroker {
 		//update: it doesn't work now, need to be fixed
 
 		messageMap.remove(m); // delete m's message queue
-		for(Iterator it = myTopicsMap.get(m).iterator(); it.hasNext();){ //for each one of m's topics, delete m from topics q
-			Object i=it.next();
-			if(i instanceof Broadcast)
-				broadcastMap.get(i.getClass()).remove(m); //is it not the right syntax?
-
-			else
-				eventMap.get(i.getClass()).remove(m);
-
+		for (Class topic : myTopicsMap.get(m) ) {
+			if (Event.class.isAssignableFrom(topic)){ eventMap.get(topic).remove(m); } //the topic is event
+			else { broadcastMap.get(topic).remove(m); } //the topic is a broadCast
 		}
+//
+//		for(Iterator it = myTopicsMap.get(m).iterator(); it.hasNext();){ //for each one of m's topics, delete m from topics q
+//			Object i=it.next();
+//			if(i instanceof Broadcast) //TODO ALON: check is this change fix problem
+//				broadcastMap.get(i).remove(m); //is it not the right syntax?
+//			else
+//				eventMap.get(i).remove(m);
+//		}
 		myTopicsMap.remove(m); //delete m's topic queue
 	}
 
