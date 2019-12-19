@@ -19,7 +19,6 @@ public class Future<T> {
 	public Future() {
 		result=null;
 	}
-	//a
 	/**
      * retrieves the result the Future object holds if it has been resolved.
      * This is a blocking method! It waits for the computation in case it has
@@ -29,7 +28,7 @@ public class Future<T> {
      * 	       
      */
 	public T get() {
-		synchronized(result){
+		synchronized(this){
 			while(!isDone()){
 				try{
 					result.wait();
@@ -44,15 +43,17 @@ public class Future<T> {
      * Resolves the result of this Future object.
      */
 	public void resolve (T result) {
-		if(result!=null)
-			this.result = result;
+		synchronized (this) {
+			if (result != null)
+				this.result = result;
+			this.notifyAll();
+		}
 	}
 	
 	/**
      * @return true if this object has been resolved, false otherwise
      */
 	public boolean isDone() {
-
 		return (result!=null);
 	}
 	
@@ -68,10 +69,10 @@ public class Future<T> {
      *         elapsed, return null.
      */
 	public T get(long timeout, TimeUnit unit) {
-		synchronized(result) {
-			long starttime = System.currentTimeMillis();
+		synchronized(this) {
+			long startTime = System.currentTimeMillis();
 			timeout = TimeUnit.MILLISECONDS.convert(timeout, unit);
-			while (System.currentTimeMillis() - starttime < timeout) {
+			while (System.currentTimeMillis() - startTime < timeout) {
 				if (isDone())
 					return result;
 			}

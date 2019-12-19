@@ -51,13 +51,12 @@ public class MessageBrokerImpl implements MessageBroker {
 		broadcastMap.get(type).add(m);
 
 
-
 	}
 
 	@Override
 	public <T> void complete(Event<T> e, T result) {
 		if(e!=null&&result!=null&&futureMap.containsKey(e)){
-			futureMap.get(e).resolve(result);
+			futureMap.get(e).resolve( result );
 			futureMap.get(e).notifyAll();
 			futureMap.remove(e);
 		}
@@ -82,7 +81,7 @@ public class MessageBrokerImpl implements MessageBroker {
 				return null;
 			} else {
 				messageMap.get(s).offer(e);
-				Future f = new Future<>();
+				Future<T> f = new Future<>(); //TODO check how are we suppose to express Future's type
 				futureMap.put(e, f);
 				eventMap.get(e.getClass()).add(s);//add s to the end of queue
 				return f;
@@ -94,8 +93,6 @@ public class MessageBrokerImpl implements MessageBroker {
 	public void register(Subscriber m) {
 		messageMap.putIfAbsent(m,new LinkedBlockingQueue<>());
 		myTopicsMap.putIfAbsent(m,new ConcurrentLinkedQueue<>());
-
-
 	}
 
 	@Override
@@ -111,12 +108,21 @@ public class MessageBrokerImpl implements MessageBroker {
 //
 //		for(Iterator it = myTopicsMap.get(m).iterator(); it.hasNext();){ //for each one of m's topics, delete m from topics q
 //			Object i=it.next();
-//			if(i instanceof Broadcast) //TODO ALON: check is this change fix problem
+//			if(i instanceof Broadcast)
 //				broadcastMap.get(i).remove(m); //is it not the right syntax?
 //			else
 //				eventMap.get(i).remove(m);
 //		}
 		myTopicsMap.remove(m); //delete m's topic queue
+
+		//TODO ALON: adding impl 19.12:
+		for(Message msgToAvoid  : messageMap.get(m)){
+			if (msgToAvoid instanceof Event)
+				this.complete((Event<? extends Object>) msgToAvoid, null);
+			//for every msg received after terminate() call, return null to all waiters (on those messages)
+		}
+
+
 	}
 
 	@Override

@@ -116,7 +116,7 @@ public abstract class Subscriber extends RunnableSubPub {
     public final void run() {
         initialize();
         while (!terminated) {
-            System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
+            //System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
             try {
                 Message newMessage = mb.awaitMessage(this);
                 Callback callback = callbackMap.get(newMessage.getClass());
@@ -124,6 +124,9 @@ public abstract class Subscriber extends RunnableSubPub {
                 callback.call(newMessage);
             } catch (InterruptedException e) { }
         }
+        // TODO 19.12 Alon: adding the case it was terminated. check if correct impl
+        //might be a situation that need to be handled if interrupt was thrown, check this case
+        mb.unregister(this);
     }
 
 }
