@@ -1,8 +1,13 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Passive object representing the diary where all reports are stored.
@@ -13,16 +18,34 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * You can add ONLY private fields and methods to this class as you see fit.
  */
 public class Diary {
+
+	//TODO ALON: some implements in 19.12, not finished
+	private List<Report> reportList = new LinkedList<Report>();
+	private AtomicInteger total;
+	//not sure if the right impl for the list
+
+
+	/**
+	 * Private class for singleton implementation
+	 */
+	private static class DiaryHolder {
+		private static Diary instance = new Diary();
+	}
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static Diary getInstance() {
-		//TODO: Implement this
-		return null;
+		return DiaryHolder.instance;
 	}
 
+	/**
+	 *  @return the list of the report
+	 */
+
 	public List<Report> getReports() {
-		return null;
+		synchronized (reportList){
+			return reportList;
+		} //TODO check if sync is needed
 	}
 
 	/**
@@ -50,6 +73,6 @@ public class Diary {
 	 */
 	public int getTotal(){
 		//TODO: Implement this
-		return 0;
+		return total.get();
 	}
 }
