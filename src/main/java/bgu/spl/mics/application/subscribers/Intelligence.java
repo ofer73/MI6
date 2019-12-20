@@ -12,7 +12,7 @@ import bgu.spl.mics.Subscriber;
 public class Intelligence extends Subscriber {
 
 	public Intelligence() {
-		super("Change_This_Name");
+		super("Intelligence");
 		// TODO Implement this
 	}
 

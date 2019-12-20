@@ -33,7 +33,6 @@ abstract class RunnableSubPub implements Runnable {
     @Override
     public abstract void run();
 
-    // TODO ALON: where are we implementing this abstract class?
 
     /**
      * @return the simple publisher

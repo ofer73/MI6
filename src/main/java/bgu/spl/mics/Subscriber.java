@@ -114,9 +114,9 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     @Override
     public final void run() {
+        mb.register(this);
         initialize();
         while (!terminated) {
-            //System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
             try {
                 Message newMessage = mb.awaitMessage(this);
                 Callback callback = callbackMap.get(newMessage.getClass());

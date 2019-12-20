@@ -11,12 +11,11 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBrokerImpl implements MessageBroker {
-	private static MessageBrokerImpl instance = null; //TODO check if necessary & valid
-	private ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>> messageMap;
-	private ConcurrentHashMap<Subscriber, ConcurrentLinkedQueue<Class<? extends Message>>> myTopicsMap;
-	private  ConcurrentHashMap<Class<? extends Event>, ConcurrentLinkedQueue<Subscriber>> eventMap;
-	private  ConcurrentHashMap<Class<? extends Broadcast>,ConcurrentLinkedQueue<Subscriber>> broadcastMap;
-	private ConcurrentHashMap<Event,Future> futureMap;
+	private ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>> messageMap= new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Subscriber, ConcurrentLinkedQueue<Class<? extends Message>>> myTopicsMap = new ConcurrentHashMap<>();
+	private  ConcurrentHashMap<Class<? extends Event>, ConcurrentLinkedQueue<Subscriber>> eventMap = new ConcurrentHashMap<>();
+	private  ConcurrentHashMap<Class<? extends Broadcast>,ConcurrentLinkedQueue<Subscriber>> broadcastMap= new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Event,Future> futureMap= new ConcurrentHashMap<>();
 
 
 
@@ -56,15 +55,17 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public <T> void complete(Event<T> e, T result) {
 		if(e!=null&&result!=null&&futureMap.containsKey(e)){
-			futureMap.get(e).resolve( result );
-			futureMap.get(e).notifyAll();
-			futureMap.remove(e);
+			synchronized (futureMap.get(e)) {
+				futureMap.get(e).resolve(result);
+				futureMap.get(e).notifyAll();
+				futureMap.remove(e);
+			}
 		}
 	}
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		// TODO check if it is a thread-safe function, and sync is not necessary here:
+		broadcastMap.putIfAbsent(b.getClass(), new ConcurrentLinkedQueue<>());
 		synchronized (broadcastMap.get(b.getClass())) { //lock this queue
 			for (Subscriber s : broadcastMap.get(b.getClass())) {
 				messageMap.get(s).add(b);
@@ -75,16 +76,22 @@ public class MessageBrokerImpl implements MessageBroker {
 	
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
+		eventMap.putIfAbsent(e.getClass(), new ConcurrentLinkedQueue<>());
 		synchronized(eventMap.get(e.getClass())) {//lock e's subscriber queue
 			Subscriber s = eventMap.get(e.getClass()).poll(); //remove head
-			if (s == null) { //means no-one subscribed to solve such event
+			if (s == null ) { //means no-one subscribed to solve such event
 				return null;
-			} else {
-				messageMap.get(s).offer(e);
-				Future<T> f = new Future<>(); //TODO check how are we suppose to express Future's type
-				futureMap.put(e, f);
-				eventMap.get(e.getClass()).add(s);//add s to the end of queue
-				return f;
+			}
+			synchronized (s) {
+				if (!messageMap.containsKey(s)) { //means no-one subscribed to solve such event
+					return null;
+				} else {
+					Future<T> f = new Future<>(); //TODO check how are we suppose to express Future's type
+					futureMap.put(e, f);
+					eventMap.get(e.getClass()).add(s);//add s to the end of queue
+					messageMap.get(s).offer(e);
+					return f;
+				}
 			}
 		}
 	}
@@ -99,30 +106,25 @@ public class MessageBrokerImpl implements MessageBroker {
 	public void unregister(Subscriber m) {
 		//TODO check if the change of the signature from message to a class type screw the function, or if this function is very BAD
 		//update: it doesn't work now, need to be fixed
+		synchronized (m) {
+			for (Class topic : myTopicsMap.get(m)) {
+				if (Event.class.isAssignableFrom(topic)) {
+					eventMap.get(topic).remove(m);
+				} //the topic is event
+				else {
+					broadcastMap.get(topic).remove(m);
+				} //the topic is a broadCast
+			}
+			myTopicsMap.remove(m); //delete m's topic queue
 
-		messageMap.remove(m); // delete m's message queue
-		for (Class topic : myTopicsMap.get(m) ) {
-			if (Event.class.isAssignableFrom(topic)){ eventMap.get(topic).remove(m); } //the topic is event
-			else { broadcastMap.get(topic).remove(m); } //the topic is a broadCast
+
+			for (Message msgToAvoid : messageMap.get(m)) {
+				if (msgToAvoid instanceof Event)
+					this.complete((Event<? extends Object>) msgToAvoid, null);
+				//for every msg received after terminate() call, return null to all waiters (on those messages)
+			}
+			messageMap.remove(m); // delete m's message queue
 		}
-//
-//		for(Iterator it = myTopicsMap.get(m).iterator(); it.hasNext();){ //for each one of m's topics, delete m from topics q
-//			Object i=it.next();
-//			if(i instanceof Broadcast)
-//				broadcastMap.get(i).remove(m); //is it not the right syntax?
-//			else
-//				eventMap.get(i).remove(m);
-//		}
-		myTopicsMap.remove(m); //delete m's topic queue
-
-		//TODO ALON: adding impl 19.12:
-		for(Message msgToAvoid  : messageMap.get(m)){
-			if (msgToAvoid instanceof Event)
-				this.complete((Event<? extends Object>) msgToAvoid, null);
-			//for every msg received after terminate() call, return null to all waiters (on those messages)
-		}
-
-
 	}
 
 	@Override
