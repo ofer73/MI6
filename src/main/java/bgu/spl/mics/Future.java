@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Future<T> {
 	private T result;
+	private boolean isDone = false;
 	
 	/**
 	 * This should be the the only public constructor in this class.
@@ -46,6 +47,7 @@ public class Future<T> {
 		synchronized (this) {
 			if (result != null)
 				this.result = result;
+			this.isDone = true; //TODO ALON: 20.12, check if ok
 			this.notifyAll();
 		}
 	}
@@ -54,8 +56,8 @@ public class Future<T> {
      * @return true if this object has been resolved, false otherwise
      */
 	public boolean isDone() {
-		return (result!=null);
-	}
+		return (this.isDone);
+	} //TODO ALON: 20.12 impl
 	
 	/**
      * retrieves the result the Future object holds if it has been resolved,

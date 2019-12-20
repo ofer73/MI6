@@ -1,7 +1,7 @@
 package bgu.spl.mics.application.publishers;
 
-import bgu.spl.mics.Broadcast;
 import bgu.spl.mics.Publisher;
+import bgu.spl.mics.application.messages.TickBroadcast;
 
 import java.util.Timer;
 
@@ -15,18 +15,19 @@ import java.util.Timer;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class TimeService extends Publisher {
-	int ticksRemain;
+	int duration;
 
-	public TimeService() {
-		super("Change_This_Name");
+	public TimeService(int duration) {
+		super("TimeService");
 		// TODO Implement this
-		//Timer timer = new Timer();
-	}
-
-	public TimeService (int dureation , String name){
-		super(name);
+		this.duration = duration;
 		Timer timer = new Timer();
 	}
+
+//	public TimeService (int dureation , String name){
+//		super(name);
+//		Timer timer = new Timer();
+//	}
 
 	@Override
 	protected void initialize() {
@@ -38,10 +39,16 @@ public class TimeService extends Publisher {
 	public void run() {
 		// TODO Implement this
 		initialize();
-		while(ticksRemain > 0){
-			getSimplePublisher().sendBroadcast();
-
-
+		int tickNumber = 1;
+		synchronized (this) {
+			while (tickNumber >= duration) {
+				getSimplePublisher().sendBroadcast(new TickBroadcast(tickNumber, tickNumber == duration));
+				tickNumber++;
+				try {
+					this.wait(100);
+				} catch (InterruptedException e) {
+				}
+			}
 		}
 	}
 
