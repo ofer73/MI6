@@ -21,13 +21,13 @@ public class MI6Runner {
     public static void main(String[] args) {
        Gson gson=new Gson();
 
-       try(Reader reader = new FileReader("/users/studs/bsc/2020/mosesofe/Desktop/SPL/ass2/input201 - 2.json")){
-           JsonParser jparser = gson.fromJson(reader,JsonParser.class);
+       try(Reader reader = new FileReader("/users/studs/bsc/2020/mosesofe/IdeaProjects/MI6/input201[3].json")){
+           JsonParser jsonParser = gson.fromJson(reader,JsonParser.class);
            Inventory inventory = Inventory.getInstance();
-           inventory.load(jparser.getInventory());
+           inventory.load(jsonParser.getInventory());
            Squad squad = Squad.getInstance();
-           squad.load(jparser.getSquad());
-           Services service = jparser.getServices();
+           squad.load(jsonParser.getSquad());
+           Services service = jsonParser.getServices();
 
            int mNumber = service.getM();
            int moneyPNumber = service.getMoneypenny();

@@ -2,10 +2,7 @@ package bgu.spl.mics.application.passiveObjects;
 import bgu.spl.mics.MessageBroker;
 import bgu.spl.mics.MessageBrokerImpl;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Passive data-object representing a information about an agent in MI6.
@@ -15,7 +12,7 @@ import java.util.Vector;
  */
 public class Squad {
 
-	private Map<String, Agent> agents; //key (string) = serial number
+	private Map<String, Agent> agents = new HashMap<>(); //key (string) = serial number
 
 	/**
 	 * Retrieves the single instance of this class.

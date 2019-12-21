@@ -6,9 +6,11 @@ import bgu.spl.mics.application.passiveObjects.Services;
 
 public class JsonParser {
 
-    private String[] inventory={};
-    private Services services=new Services();
-    private Agent[] squad={};
+    private String[] inventory;
+    private Services services;
+    private Agent[] squad;
+
+    public JsonParser(){}
 
     public String[] getInventory(){
         return inventory;

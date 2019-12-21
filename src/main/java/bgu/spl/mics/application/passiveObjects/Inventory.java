@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
@@ -18,7 +19,7 @@ import java.util.concurrent.Semaphore;
  * You can add ONLY private fields and methods to this class as you see fit.
  */
 public class Inventory {
-	private List<String> gadgets;
+	private List<String> gadgets = new LinkedList<>();
 
 	/**
      * Retrieves the single instance of this class.

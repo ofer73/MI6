@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class Agent {
 	private AtomicBoolean available = new AtomicBoolean(true);
-	private AtomicReference<String> name = new AtomicReference("");
-	private AtomicReference<String> serial = new AtomicReference("");
+	private String name = "";
+	private String serialNumber ="";
 
 
 
@@ -20,7 +20,7 @@ public class Agent {
 	 * Sets the serial number of an agent.
 	 */
 	public void setSerialNumber(String serialNumber) {
-		serial.compareAndSet(serial.get(),serialNumber);
+		this.serialNumber = serialNumber;
 	}
 
 	/**
@@ -29,14 +29,14 @@ public class Agent {
      * @return The serial number of an agent.
      */
 	public String getSerialNumber() {
-		return serial.get();
+		return serialNumber;
 	}
 
 	/**
 	 * Sets the name of the agent.
 	 */
 	public void setName(String name) {
-		this.name.compareAndSet(this.name.get(),name);
+		this.name=name;
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class Agent {
      * @return the name of the agent.
      */
 	public String getName() {
-		return name.get();
+		return name;
 	}
 
 	/**
