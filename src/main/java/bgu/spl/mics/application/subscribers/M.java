@@ -51,7 +51,7 @@ public class M extends Subscriber {
 						} catch (InterruptedException ie) {
 						}
 					}
-					if ((Integer) tryAcquireAgents.get().get("acquired") == 0) {
+					if ( tryAcquireAgents.get() == null || (Integer) tryAcquireAgents.get().get("acquired") == 0) {
 						break;
 					}
 				}
@@ -74,9 +74,8 @@ public class M extends Subscriber {
 				diary.addReport(report);
 				break;	//finished handling the mission
 			}
-			diary.incrementTotal(); //incrementing whether it failed or not
-
-
+			diary.incrementTotal(); //incrementing whether it succeed or not
+			//end of callback
 		});
 		
 	}

@@ -1,6 +1,8 @@
 package bgu.spl.mics.application;
 import bgu.spl.mics.application.passiveObjects.Inventory;
 import bgu.spl.mics.application.passiveObjects.Squad;
+import bgu.spl.mics.application.publishers.TimeService;
+import bgu.spl.mics.application.subscribers.Intelligence;
 import com.google.gson.Gson;
 
 import java.io.Reader;
@@ -23,9 +25,25 @@ public class MI6Runner {
            Squad squad = Squad.getInstance();
            squad.load(jparser.getSquad());
            Services service = jparser.getServices();
+
+           int mNumber = 0;
+           int moneyPNumber = 0;
+           Intelligence[] intelligences = null;
+           int time = 0;
+
+           Thread timeService = new Thread(new TimeService(time)); //TODO: check is
+           for (int i = 0; i < mNumber; i++){
+               Tread newM = new Tread(i);
+               newM.start();
+           }
+           for (int i = 0; i < mNumber; i++){
+               Tread newMoney = new Tread(i);
+               newMoney.start();
+           }
        }
-
-
        catch (IOException e){}
+
+
+
     }
 }

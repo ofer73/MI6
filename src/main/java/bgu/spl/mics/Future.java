@@ -32,7 +32,7 @@ public class Future<T> {
 		synchronized(this){
 			while(!isDone()){
 				try{
-					result.wait();
+					this.wait();
 				}
 				catch(InterruptedException e) {}
 			}

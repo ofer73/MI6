@@ -42,7 +42,7 @@ public class Intelligence extends Subscriber {
 					index++;
 				}
 			}
-				}
-		);
+
+		});
 	}
 }

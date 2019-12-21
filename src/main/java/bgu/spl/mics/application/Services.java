@@ -8,6 +8,8 @@ public class Services {
     private Intelligence[] intelligence;
     private int time;
 
+
+
     private int getM(){
         return M;
     }
@@ -17,7 +19,7 @@ public class Services {
     private Intelligence[] getIntelligence(){
         return intelligence;
     }
-    private int gettime(){
+    private int getTime(){
         return time;
     }
 
