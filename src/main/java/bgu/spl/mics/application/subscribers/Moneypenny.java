@@ -1,6 +1,11 @@
 package bgu.spl.mics.application.subscribers;
 
 import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.application.messages.*;
+import bgu.spl.mics.application.passiveObjects.Squad;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Only this type of Subscriber can access the squad.
@@ -10,16 +15,34 @@ import bgu.spl.mics.Subscriber;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class Moneypenny extends Subscriber {
+	private int serial;
+	private Squad squad ;
 
-	public Moneypenny() {
-		super("Change_This_Name");
-		// TODO Implement this
+	public Moneypenny(int serial) {
+		super("Moneypenny");
+		this.serial=serial;
+		this.squad=Squad.getInstance();
 	}
 
 	@Override
 	protected void initialize() {
-		// TODO Implement this
-		
+		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
+			if (tick.isFinalTick())
+				terminate();
+			});
+		subscribeEvent(AgentsAvailableEvent.class,(AgentsAvailableEvent e)->{
+					Map<String,Object> map=new HashMap<>();
+					map.put("serial", serial);
+					map.put("names",squad.getAgentsNames(e.getAgents())); //return a list of names (of agents)
+					map.put("acquired", squad.getAgents(e.getAgents())? 1 : 0);
+					complete(e,map);
+				}
+		);
+		subscribeEvent(SendAgentsEvent.class,(SendAgentsEvent e)->{
+			squad.sendAgents(e.getAgents(),e.getDuration());
+		});
+		subscribeEvent(ReleaseAgentsEvent.class,(ReleaseAgentsEvent e)->{
+			squad.releaseAgents(e.getAgents());
+		});
 	}
-
 }

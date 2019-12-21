@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Diary {
 
 	//TODO ALON: some implements in 19.12, not finished
-	private List<Report> reportList = new LinkedList<Report>();
-	private AtomicInteger total;
+	private List<Report> reportList = new LinkedList<>();
+	private AtomicInteger total = new AtomicInteger(0);
 	//not sure if the right impl for the list
 
 
@@ -53,7 +53,11 @@ public class Diary {
 	 * @param reportToAdd - the report to add
 	 */
 	public void addReport(Report reportToAdd){
-		//TODO: Implement this
+		if(reportToAdd!=null) {
+			synchronized (reportList) {
+				reportList.add(reportToAdd);
+			}
+		}
 	}
 
 	/**
@@ -74,5 +78,12 @@ public class Diary {
 	public int getTotal(){
 		//TODO: Implement this
 		return total.get();
+	}
+
+	/**
+	 * Increments the total number of received missions by 1
+	 */
+	public void incrementTotal(){
+		total.incrementAndGet();
 	}
 }

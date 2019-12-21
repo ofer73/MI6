@@ -23,8 +23,6 @@ public class MI6Runner {
            Squad squad = Squad.getInstance();
            squad.load(jparser.getSquad());
            Services service = jparser.getServices();
-
-
        }
 
 

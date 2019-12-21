@@ -76,16 +76,16 @@ public class Squad {
 				return false;
 		}
 			synchronized (this) {
-				boolean allavailable = false;
-				while (!allavailable) {
-					allavailable=true;
+				boolean allAvailable = false;
+				while (!allAvailable) {
+					allAvailable=true;
 					for (String s : serials) { //check if all agents are available to acquire
 						if (!agents.get(s).isAvailable()) {
-							allavailable = false;
+							allAvailable = false;
 							break;
 						}
 					}
-					if(!allavailable) { //if not we will wait
+					if(!allAvailable) { //if not we will wait
 						try {
 							this.wait();
 						}catch (InterruptedException e){}
@@ -106,7 +106,7 @@ public class Squad {
      * @return a list of the names of the agents with the specified serials.
      */
     public List<String> getAgentsNames(List<String> serials){
-		List<String> newList = new Vector<>();
+		List<String> newList = new LinkedList<>();
 		for (String serialNumber : serials){
 			newList.add(this.agents.get(serialNumber).getName()); //adding the name of agent with the serialNumber
 		}
