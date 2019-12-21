@@ -29,6 +29,10 @@ public class Intelligence extends Subscriber {
 		index=0;
 	}
 
+	public List<MissionInfo> getMissions() {
+		return missions;
+	}
+
 	@Override
 	protected void initialize() {
 		SimplePublisher publish = getSimplePublisher();

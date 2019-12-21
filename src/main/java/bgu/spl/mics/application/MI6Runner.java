@@ -34,19 +34,15 @@ public class MI6Runner {
 
            int mNumber = service.getM();
            int moneyPNumber = service.getMoneypenny();
-           MissionInfo[][] intelligences = service.getIntelligence();
+           Intelligence[] intelligences = service.getIntelligence();
            int time = service.getTime();
 
            //init TimeService
            Thread timeService = new Thread(new TimeService(time)); //TODO: check is right
            timeService.start();
            //init Intelligence:
-           for( MissionInfo[] newInfo : intelligences){
-               LinkedList<MissionInfo> tmpList= new LinkedList<>();
-               for (MissionInfo i : newInfo){
-                   tmpList.add(i);
-               }
-               Thread intel = new Thread(new Intelligence(tmpList));
+           for( Intelligence newInfo : intelligences){
+               Thread intel = new Thread(new Intelligence(newInfo.getMissions()));
                System.out.println("before start"); //TODO: delete before submission
                intel.start();
                System.out.println("after start"); //TODO: delete before submission

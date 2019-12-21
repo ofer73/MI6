@@ -8,7 +8,7 @@ import java.util.List;
 public class Services {
     private int M;
     private int Moneypenny;
-    private MissionInfo[][] intelligence;
+    private Intelligence[] intelligence;
     private int time;
 
     public int getM() {
@@ -19,9 +19,10 @@ public class Services {
         return Moneypenny;
     }
 
-    public MissionInfo[][] getIntelligence() { return intelligence; }
+    public Intelligence[] getIntelligence() { return intelligence; }
 
     public int getTime() {
         return time;
     }
+
 }
