@@ -19,8 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class Subscriber extends RunnableSubPub {
     private boolean terminated = false;
-    private MessageBroker mb= MessageBrokerImpl.getInstance();
-    private ConcurrentHashMap< Class,Callback> callbackMap=new ConcurrentHashMap<>();
+    private MessageBroker mb = MessageBrokerImpl.getInstance();
+    private ConcurrentHashMap< Class,Callback> callbackMap = new ConcurrentHashMap<>();
 
     /**
      * @param name the Subscriber name (used mainly for debugging purposes -
@@ -114,6 +114,7 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     @Override
     public final void run() {
+        //mb = MessageBrokerImpl.getInstance();
         mb.register(this);
         initialize();
         while (!terminated) {

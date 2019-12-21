@@ -1,5 +1,6 @@
 package bgu.spl.mics.application;
 import bgu.spl.mics.application.passiveObjects.Inventory;
+import bgu.spl.mics.application.passiveObjects.MissionInfo;
 import bgu.spl.mics.application.passiveObjects.Services;
 import bgu.spl.mics.application.passiveObjects.Squad;
 import bgu.spl.mics.application.publishers.TimeService;
@@ -12,6 +13,8 @@ import com.google.gson.Gson;
 import java.io.Reader;
 import java.io.IOException;
 import java.io.FileReader;
+import java.util.LinkedList;
+import java.util.List;
 
 /** This is the Main class of the application. You should parse the input file, 
  * create the different instances of the objects, and run the system.
@@ -31,17 +34,24 @@ public class MI6Runner {
 
            int mNumber = service.getM();
            int moneyPNumber = service.getMoneypenny();
-           Intelligence[] intelligences = service.getIntelligence();
+           MissionInfo[][] intelligences = service.getIntelligence();
            int time = service.getTime();
 
            //init TimeService
            Thread timeService = new Thread(new TimeService(time)); //TODO: check is right
            timeService.start();
            //init Intelligence:
-           for( Intelligence newInt : intelligences){
-               Thread intel = new Thread(newInt);
+           for( MissionInfo[] newInfo : intelligences){
+               LinkedList<MissionInfo> tmpList= new LinkedList<>();
+               for (MissionInfo i : newInfo){
+                   tmpList.add(i);
+               }
+               Thread intel = new Thread(new Intelligence(tmpList));
+               System.out.println("before start"); //TODO: delete before submission
                intel.start();
+               System.out.println("after start"); //TODO: delete before submission
            }
+           System.out.println("created all intelligence"); //TODO: delete before submission
            //init Q:
            Thread qThread = new Thread(new Q());
            qThread.start();

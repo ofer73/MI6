@@ -15,7 +15,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	private ConcurrentHashMap<Subscriber, ConcurrentLinkedQueue<Class<? extends Message>>> myTopicsMap = new ConcurrentHashMap<>();
 	private  ConcurrentHashMap<Class<? extends Event>, ConcurrentLinkedQueue<Subscriber>> eventMap = new ConcurrentHashMap<>();
 	private  ConcurrentHashMap<Class<? extends Broadcast>,ConcurrentLinkedQueue<Subscriber>> broadcastMap= new ConcurrentHashMap<>();
-	private ConcurrentHashMap<Event,Future> futureMap= new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Event,Future> futureMap = new ConcurrentHashMap<>();
 
 
 

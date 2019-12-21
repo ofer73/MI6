@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class MissionInfo {
 	//TODO ALON: added fields and methods 20.12
-	private String missionName;
+	private String name;
 	private List<String> serialAgentsNumbers;
 	private String gadget;
 	private int timeIssued;
@@ -22,17 +22,17 @@ public class MissionInfo {
     /**
      * Sets the name of the mission.
      */
-    public void setMissionName(String missionName) {
+    public void setName(String name) {
         // TODO Implement this
-		this.missionName = missionName;
+		this.name = name;
     }
 
 	/**
      * Retrieves the name of the mission.
      */
-	public String getMissionName() {
+	public String getName() {
 		// TODO Implement this
-		return this.missionName;
+		return this.name;
 	}
 
     /**

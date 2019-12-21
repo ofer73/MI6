@@ -8,7 +8,6 @@ import bgu.spl.mics.application.passiveObjects.MissionInfo;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A Publisher\Subscriber.
@@ -18,15 +17,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class Intelligence extends Subscriber {
-	List<MissionInfo> infoList;
+	List<MissionInfo> missions = new LinkedList<>();
 	int index;
 
 
-	public Intelligence(List<MissionInfo> infoList) {
+	public Intelligence(List<MissionInfo> missions) {
 		super("Intelligence");
 		//load & sort infoList:
-		this.infoList = infoList;
-		this.infoList.sort((MissionInfo i1,MissionInfo i2) -> i1.getTimeIssued()-i2.getTimeIssued()); //sort by issue time
+		this.missions = missions;
+		this.missions.sort((MissionInfo i1, MissionInfo i2) -> i1.getTimeIssued()-i2.getTimeIssued()); //sort by issue time
 		index=0;
 	}
 
@@ -37,8 +36,8 @@ public class Intelligence extends Subscriber {
 			if (tick.isFinalTick()) {
 				terminate();
 			} else {
-				while (index < infoList.size() && infoList.get(index).getTimeIssued() == tick.getTickNumber()) {
-					publish.sendEvent(new MissionReceivedEvent(infoList.get(index)));
+				while (index < missions.size() && missions.get(index).getTimeIssued() == tick.getTickNumber()) {
+					publish.sendEvent(new MissionReceivedEvent(missions.get(index)));
 					index++;
 				}
 			}

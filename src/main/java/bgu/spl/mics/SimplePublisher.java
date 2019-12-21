@@ -10,7 +10,7 @@ package bgu.spl.mics;
  * <p>
  */
 public final class SimplePublisher {
-    MessageBroker messageBroker = MessageBrokerImpl.getInstance();
+    private MessageBroker messageBroker = MessageBrokerImpl.getInstance();
     /**
      * Sends the event {@code e} using the MessageBroker and receive a {@link Future<T>}
      * object that may be resolved to hold a result. This method must be Non-Blocking since

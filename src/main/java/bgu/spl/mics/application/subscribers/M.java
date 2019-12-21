@@ -76,7 +76,7 @@ public class M extends Subscriber {
 
 	private Report createReport(MissionInfo info, Future<Map<String, Object>> tryAcquireAgents, Future<Map<String, Integer>> tryAcquireGadget) {
 		Report report = new Report();
-		report.setMissionName(info.getMissionName());
+		report.setMissionName(info.getName());
 		report.setM(this.serial);
 		report.setMoneypenny((Integer) tryAcquireAgents.get().get("serial"));
 		report.setAgentsSerialNumbersNumber(info.getSerialAgentsNumbers());
