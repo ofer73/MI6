@@ -1,12 +1,14 @@
 package bgu.spl.mics.application;
 
 import bgu.spl.mics.application.passiveObjects.Agent;
+import bgu.spl.mics.application.passiveObjects.Services;
+
 
 public class JsonParser {
 
-    private String[] inventory;
-    private Services services;
-    private Agent[] squad;
+    private String[] inventory={};
+    private Services services=new Services();
+    private Agent[] squad={};
 
     public String[] getInventory(){
         return inventory;

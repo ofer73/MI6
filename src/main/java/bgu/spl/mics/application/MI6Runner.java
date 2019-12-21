@@ -1,14 +1,17 @@
 package bgu.spl.mics.application;
 import bgu.spl.mics.application.passiveObjects.Inventory;
+import bgu.spl.mics.application.passiveObjects.Services;
 import bgu.spl.mics.application.passiveObjects.Squad;
 import bgu.spl.mics.application.publishers.TimeService;
 import bgu.spl.mics.application.subscribers.Intelligence;
+import bgu.spl.mics.application.subscribers.M;
+import bgu.spl.mics.application.subscribers.Moneypenny;
+import bgu.spl.mics.application.subscribers.Q;
 import com.google.gson.Gson;
 
 import java.io.Reader;
 import java.io.IOException;
 import java.io.FileReader;
-import java.util.Arrays;
 
 /** This is the Main class of the application. You should parse the input file, 
  * create the different instances of the objects, and run the system.
@@ -18,7 +21,7 @@ public class MI6Runner {
     public static void main(String[] args) {
        Gson gson=new Gson();
 
-       try(Reader reader = new FileReader("/users/studs/bsc/2020/mosesofe/IdeaProjects/MI6/inut201-2.json")){
+       try(Reader reader = new FileReader("/users/studs/bsc/2020/mosesofe/Desktop/SPL/ass2/input201 - 2.json")){
            JsonParser jparser = gson.fromJson(reader,JsonParser.class);
            Inventory inventory = Inventory.getInstance();
            inventory.load(jparser.getInventory());
@@ -26,19 +29,31 @@ public class MI6Runner {
            squad.load(jparser.getSquad());
            Services service = jparser.getServices();
 
-           int mNumber = 0;
-           int moneyPNumber = 0;
-           Intelligence[] intelligences = null;
-           int time = 0;
+           int mNumber = service.getM();
+           int moneyPNumber = service.getMoneypenny();
+           Intelligence[] intelligences = service.getIntelligence();
+           int time = service.getTime();
 
-           Thread timeService = new Thread(new TimeService(time)); //TODO: check is
-           for (int i = 0; i < mNumber; i++){
-               Tread newM = new Tread(i);
-               newM.start();
+           //init TimeService
+           Thread timeService = new Thread(new TimeService(time)); //TODO: check is right
+           timeService.start();
+           //init Intelligence:
+           for( Intelligence newInt : intelligences){
+               Thread intel = new Thread(newInt);
+               intel.start();
            }
-           for (int i = 0; i < mNumber; i++){
-               Tread newMoney = new Tread(i);
+           //init Q:
+           Thread qThread = new Thread(new Q());
+           qThread.start();
+           //init MoneyPenny:
+           for (int i = 0; i < moneyPNumber; i++){
+               Thread newMoney = new Thread(new Moneypenny(i));
                newMoney.start();
+           }
+           //init M:
+           for (int i = 0; i < mNumber; i++){
+               Thread newM = new Thread(new M(i));
+               newM.start();
            }
        }
        catch (IOException e){}

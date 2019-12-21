@@ -35,6 +35,7 @@ public class M extends Subscriber {
 		SimplePublisher publish = getSimplePublisher();
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
+				diary.printToFile("diaryOutputFile.json");
 				terminate();
 			} else {
 				currentTick = tick.getTickNumber();
@@ -44,30 +45,15 @@ public class M extends Subscriber {
 			MissionInfo info = e.getInfo();
 			while (true) { // while() is implemented in order to abort if something fails. only 1 iteration is executed
 				Future<Map<String,Object>> tryAcquireAgents = publish.sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers()));
-				synchronized (tryAcquireAgents) {
-					while (!tryAcquireAgents.isDone()) {
-						try {
-							tryAcquireAgents.wait();
-						} catch (InterruptedException ie) {
-						}
-					}
-					if ( tryAcquireAgents.get() == null || (Integer) tryAcquireAgents.get().get("acquired") == 0) {
-						break;
-					}
+				if ( tryAcquireAgents.get() == null || (Integer) tryAcquireAgents.get().get("acquired") == 0) {
+					break;
 				}
 				Future<Map<String,Integer>> tryAcquireGadget = publish.sendEvent(new GadgetAvailableEvent(info.getGadget()));
-				synchronized (tryAcquireGadget) {
-					while (!tryAcquireGadget.isDone()) {
-						try {
-							tryAcquireGadget.wait();
-						} catch (InterruptedException ie) {
-						}
-					}
-					if (tryAcquireGadget.get().get("acquired") == 0 || currentTick >= info.getTimeExpired()) {
-						publish.sendEvent(new ReleaseAgentsEvent(info.getSerialAgentsNumbers()));
-						break;
-					}
+				if ( tryAcquireGadget.get()==null || tryAcquireGadget.get().get("acquired") == 0 || currentTick >= info.getTimeExpired()) {
+					publish.sendEvent(new ReleaseAgentsEvent(info.getSerialAgentsNumbers()));
+					break;
 				}
+
 				publish.sendEvent(new SendAgentsEvent(info.getSerialAgentsNumbers(),info.getDuration()));
 				Report report = createReport(info, tryAcquireAgents, tryAcquireGadget);
 				//ass method to creat report & make code readable

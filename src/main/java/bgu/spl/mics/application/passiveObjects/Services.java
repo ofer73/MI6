@@ -1,4 +1,4 @@
-package bgu.spl.mics.application;
+package bgu.spl.mics.application.passiveObjects;
 
 import bgu.spl.mics.application.subscribers.Intelligence;
 
@@ -8,19 +8,19 @@ public class Services {
     private Intelligence[] intelligence;
     private int time;
 
-
-
-    private int getM(){
+    public int getM() {
         return M;
     }
-    private int getMoneypenny(){
+
+    public int getMoneypenny() {
         return Moneypenny;
     }
-    private Intelligence[] getIntelligence(){
+
+    public Intelligence[] getIntelligence() {
         return intelligence;
     }
-    private int getTime(){
+
+    public int getTime() {
         return time;
     }
-
 }

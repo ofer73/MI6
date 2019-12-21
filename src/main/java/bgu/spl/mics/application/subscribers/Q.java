@@ -39,6 +39,7 @@ public class Q extends Subscriber {
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
 				terminate();
+				inv.printToFile("inventoryOutputFile.json");
 			} else {
 				currentTick = tick.getTickNumber();
 			}

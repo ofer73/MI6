@@ -1,5 +1,11 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,7 +74,15 @@ public class Diary {
 	 * This method is called by the main method in order to generate the output.
 	 */
 	public void printToFile(String filename){
-		//TODO: Implement this
+		try {
+			Writer writer = new FileWriter(filename);
+			Gson gson = new GsonBuilder().create();
+			gson.toJson(reportList,writer);
+			writer.flush();
+			writer.close();
+
+		}
+		catch (IOException e){}
 	}
 
 	/**
@@ -76,7 +90,6 @@ public class Diary {
 	 * @return the total number of received missions (executed / aborted) be all the M-instances.
 	 */
 	public int getTotal(){
-		//TODO: Implement this
 		return total.get();
 	}
 

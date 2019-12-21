@@ -17,7 +17,7 @@ public class MessageBrokerTest {
 
     @Test
     public void Test_subscribeEvent(){
-        Subscriber s=new Moneypenny();
+        Subscriber s=new Moneypenny(0);
         StringEvent e1 = new StringEvent();
         IntEvent e2=new IntEvent();
         e1.st="Money";
