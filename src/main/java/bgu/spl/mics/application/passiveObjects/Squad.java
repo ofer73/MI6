@@ -72,29 +72,32 @@ public class Squad {
 			if(!agents.containsKey(s)) //check that squad contains all agents
 				return false;
 		}
-			synchronized (this) {
-				boolean allAvailable = false;
-				while (!allAvailable) {
-					allAvailable=true;
-					for (String s : serials) { //check if all agents are available to acquire
-						if (!agents.get(s).isAvailable()) {
-							allAvailable = false;
-							break;
-						}
+		synchronized (this) {
+			boolean allAvailable = false;
+			while (!allAvailable) {
+				allAvailable=true;
+				for (String s : serials) { //check if all agents are available to acquire
+					if (!agents.get(s).isAvailable()) {
+						System.out.println("Squad: tried acquire() Agents, but " + agents.get(s).getSerialNumber() + " unavailable -> wait()"); //TODO: delete before submission
+						allAvailable = false;
+						break;
 					}
-					if(!allAvailable) { //if not we will wait
-						try {
-							this.wait();
-						}catch (InterruptedException e){}
-					}
-					else{ //else acquire all
-						for (String s : serials){
-							agents.get(s).acquire();
-						}
+				}
+
+				if(!allAvailable) { //if not we will wait
+					try {
+						this.wait();
+					} catch (InterruptedException e) {}
+
+				}else{ //else acquire all
+					System.out.println("Squad: all agents " +serials.toString()+ " available. agents -> acquire()"); //TODO: delete before submission
+					for (String s : serials){
+						agents.get(s).acquire();
 					}
 				}
 			}
-			return true;
+		}
+		return true;
 	}
 
     /**

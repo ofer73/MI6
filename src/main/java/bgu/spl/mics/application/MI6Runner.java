@@ -81,7 +81,7 @@ public class MI6Runner {
            Thread timeService = new Thread(new TimeService(time)); //TODO: check is right
            timeService.start();
 
-           //System.out.println("All participants initialized"); //TODO: delete before submission
+//           System.out.println("All participants initialized"); //TODO: delete before submission
 
        }
        catch (IOException e){}

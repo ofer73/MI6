@@ -47,7 +47,7 @@ public class M extends Subscriber {
 			diary.incrementTotal(); //incrementing whether it succeed or not
 			boolean isSucceed = false; //TODO ALON: added 22.12 11:00
 			while (true) { // while() is implemented in order to abort if something fails. only 1 iteration is executed
-				System.out.println("M " + serial + ", " + info.getName() + " -> start()"); //TODO: delete before submission
+				System.out.println("M " + serial + ": " + info.getName() + " -> start()"); //TODO: delete before submission
 
 
 				Future<Map<String,Object>> tryAcquireAgents = publish.sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers()));
@@ -79,8 +79,8 @@ public class M extends Subscriber {
 
 			}
 			complete(e, isSucceed);//TODO: ALON: 22.12 11:00
-			System.out.println("M " + serial + ", " + info.getName() + " -> end()"); //TODO: delete before submission
-			System.out.println("M " + serial + " succeeded mission " + info.getName() + "? " + isSucceed); //TODO: delete before submission
+			System.out.println("M " + serial + ": " + info.getName() + " -> end()"); //TODO: delete before submission
+			System.out.println("M " + serial + ": succeeded mission " + info.getName() + "? " + isSucceed); //TODO: delete before submission
 
 
 			//end of callback

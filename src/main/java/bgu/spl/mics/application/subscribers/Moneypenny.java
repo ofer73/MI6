@@ -34,22 +34,22 @@ public class Moneypenny extends Subscriber {
 			}
 			});
 		subscribeEvent(AgentsAvailableEvent.class,(AgentsAvailableEvent e)->{
-					Map<String,Object> map=new HashMap<>();
-					map.put("serial", serial);
-					map.put("names",squad.getAgentsNames(e.getAgents())); //return a list of names (of agents)
-					map.put("acquired", squad.getAgents(e.getAgents())? 1 : 0);
-					complete(e,map);
-				}
+			Map<String,Object> map=new HashMap<>();
+			map.put("serial", serial);
+			map.put("acquired", squad.getAgents(e.getAgents())? 1 : 0);
+			map.put("names",squad.getAgentsNames(e.getAgents())); //return a list of names (of agents)
+			complete(e,map);
+		}
 		);
 		subscribeEvent(SendAgentsEvent.class,(SendAgentsEvent e)->{
 			squad.sendAgents(e.getAgents(),e.getDuration());
-			System.out.println("Monepenny " + serial + " SendAgents"); //TODO: delete before submission
+			System.out.println("Monepenny " + serial + ": SendAgentsEvent (and released automatically)"); //TODO: delete before submission
 			complete(e, "SendAgents -> executed");//TODO: ALON: 22.12 11:00
 
 		});
 		subscribeEvent(ReleaseAgentsEvent.class,(ReleaseAgentsEvent e)->{
 			squad.releaseAgents(e.getAgents());
-			System.out.println("Monepenny " + serial + " ReleaseAgents"); //TODO: delete before submission
+			System.out.println("Monepenny " + serial + ": ReleaseAgentsEvent (without sending to mission)"); //TODO: delete before submission
 			complete(e, "ReleaseAgents -> executed");//TODO: ALON: 22.12 11:00
 		});
 	}
