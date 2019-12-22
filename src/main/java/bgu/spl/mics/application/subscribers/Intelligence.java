@@ -38,6 +38,7 @@ public class Intelligence extends Subscriber {
 		SimplePublisher publish = getSimplePublisher();
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
+				System.out.println("terminate Intelligence executed"); //TODO: delete before submission
 				terminate();
 			} else {
 				while (index < missions.size() && missions.get(index).getTimeIssued() == tick.getTickNumber()) {

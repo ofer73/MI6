@@ -28,7 +28,7 @@ public class TimeService extends Publisher {
 	@Override
 	protected void initialize() {
 		// TODO Implement this
-		System.out.printf("TimeService -> start()");
+		System.out.println("TimeService -> start()");
 	}
 
 	@Override

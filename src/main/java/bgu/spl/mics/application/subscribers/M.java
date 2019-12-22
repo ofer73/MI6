@@ -35,6 +35,7 @@ public class M extends Subscriber {
 		SimplePublisher publish = getSimplePublisher();
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
+				System.out.println("terminate M " + serial + " executed"); //TODO: delete before submission
 				diary.printToFile("diaryOutputFile.json");
 				terminate();
 			} else {
@@ -43,13 +44,15 @@ public class M extends Subscriber {
 		});
 		subscribeEvent(MissionReceivedEvent.class,(MissionReceivedEvent e)->{
 			MissionInfo info = e.getInfo();
+			boolean isSucceed = false; //TODO ALON: added 22.12 11:00
 			while (true) { // while() is implemented in order to abort if something fails. only 1 iteration is executed
 				Future<Map<String,Object>> tryAcquireAgents = publish.sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers()));
-				if ( tryAcquireAgents.get() == null || (Integer) tryAcquireAgents.get().get("acquired") == 0) {
+//				tryAcquireAgents.get(); //for test only
+				if ( tryAcquireAgents == null || tryAcquireAgents.get() == null || (Integer) tryAcquireAgents.get().get("acquired") == 0) {
 					break;
 				}
 				Future<Map<String,Integer>> tryAcquireGadget = publish.sendEvent(new GadgetAvailableEvent(info.getGadget()));
-				if ( tryAcquireGadget.get()==null || tryAcquireGadget.get().get("acquired") == 0 || currentTick >= info.getTimeExpired()) {
+				if ( tryAcquireGadget == null || tryAcquireGadget.get()==null || tryAcquireGadget.get().get("acquired") == 0 || currentTick >= info.getTimeExpired()) {
 					publish.sendEvent(new ReleaseAgentsEvent(info.getSerialAgentsNumbers()));
 					break;
 				}
@@ -58,12 +61,19 @@ public class M extends Subscriber {
 				Report report = createReport(info, tryAcquireAgents, tryAcquireGadget);
 				//ass method to creat report & make code readable
 				diary.addReport(report);
+				//TODO: ALON: 22.12 11:00
+				System.out.println("M " + serial + " succeeded to execute the mission " + info.getName()); //TODO: delete before submission
+				isSucceed = true;
 				break;	//finished handling the mission
 			}
+			complete(e, isSucceed);//TODO: ALON: 22.12 11:00
+			System.out.println("M " + serial + " succeeded mission " + info.getName() + "? " + isSucceed); //TODO: delete before submission
+
+
 			diary.incrementTotal(); //incrementing whether it succeed or not
 			//end of callback
 		});
-		
+		System.out.println("M " + serial + " initialized"); //TODO: delete before submission
 	}
 
 	/**

@@ -38,6 +38,7 @@ public class Q extends Subscriber {
 	protected void initialize() {
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
+				System.out.println("terminate Q executed"); //TODO: delete before submission
 				terminate();
 				inv.printToFile("inventoryOutputFile.json");
 			} else {

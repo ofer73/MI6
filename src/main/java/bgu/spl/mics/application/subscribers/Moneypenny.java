@@ -26,8 +26,10 @@ public class Moneypenny extends Subscriber {
 
 	@Override
 	protected void initialize() {
+		System.out.println("Monepenny " + serial + " initialized"); //TODO: delete before submission
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick())
+				System.out.println("terminate Moneypenny " + serial + "  executed -> start unregister"); //TODO: delete before submission
 				terminate();
 			});
 		subscribeEvent(AgentsAvailableEvent.class,(AgentsAvailableEvent e)->{
@@ -40,9 +42,12 @@ public class Moneypenny extends Subscriber {
 		);
 		subscribeEvent(SendAgentsEvent.class,(SendAgentsEvent e)->{
 			squad.sendAgents(e.getAgents(),e.getDuration());
+			complete(e, "SendAgents -> executed");//TODO: ALON: 22.12 11:00
+
 		});
 		subscribeEvent(ReleaseAgentsEvent.class,(ReleaseAgentsEvent e)->{
 			squad.releaseAgents(e.getAgents());
+			complete(e, "ReleaseAgents -> executed");//TODO: ALON: 22.12 11:00
 		});
 	}
 }

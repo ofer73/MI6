@@ -127,6 +127,7 @@ public abstract class Subscriber extends RunnableSubPub {
         }
         // TODO 19.12 Alon: adding the case it was terminated. check if correct impl
         //might be a situation that need to be handled if interrupt was thrown, check this case
+        //System.out.println("terminate Subscriber executed -> start unregister"); //TODO: delete before submission
         mb.unregister(this);
     }
 
