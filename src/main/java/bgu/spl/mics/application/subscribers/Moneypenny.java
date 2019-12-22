@@ -28,9 +28,10 @@ public class Moneypenny extends Subscriber {
 	protected void initialize() {
 		System.out.println("Monepenny " + serial + " initialized"); //TODO: delete before submission
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
-			if (tick.isFinalTick())
+			if (tick.isFinalTick()) {
 				System.out.println("terminate Moneypenny " + serial + "  executed -> start unregister"); //TODO: delete before submission
 				terminate();
+			}
 			});
 		subscribeEvent(AgentsAvailableEvent.class,(AgentsAvailableEvent e)->{
 					Map<String,Object> map=new HashMap<>();

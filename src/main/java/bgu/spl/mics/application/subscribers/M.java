@@ -44,6 +44,7 @@ public class M extends Subscriber {
 		});
 		subscribeEvent(MissionReceivedEvent.class,(MissionReceivedEvent e)->{
 			MissionInfo info = e.getInfo();
+			diary.incrementTotal(); //incrementing whether it succeed or not
 			boolean isSucceed = false; //TODO ALON: added 22.12 11:00
 			while (true) { // while() is implemented in order to abort if something fails. only 1 iteration is executed
 				Future<Map<String,Object>> tryAcquireAgents = publish.sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers()));
@@ -70,7 +71,6 @@ public class M extends Subscriber {
 			System.out.println("M " + serial + " succeeded mission " + info.getName() + "? " + isSucceed); //TODO: delete before submission
 
 
-			diary.incrementTotal(); //incrementing whether it succeed or not
 			//end of callback
 		});
 		System.out.println("M " + serial + " initialized"); //TODO: delete before submission
