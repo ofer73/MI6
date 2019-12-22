@@ -47,27 +47,39 @@ public class M extends Subscriber {
 			diary.incrementTotal(); //incrementing whether it succeed or not
 			boolean isSucceed = false; //TODO ALON: added 22.12 11:00
 			while (true) { // while() is implemented in order to abort if something fails. only 1 iteration is executed
+				System.out.println("M " + serial + ", " + info.getName() + " -> start()"); //TODO: delete before submission
+
+
 				Future<Map<String,Object>> tryAcquireAgents = publish.sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers()));
-//				tryAcquireAgents.get(); //for test only
+
 				if ( tryAcquireAgents == null || tryAcquireAgents.get() == null || (Integer) tryAcquireAgents.get().get("acquired") == 0) {
+					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireAgents"); //TODO: delete before submission
 					break;
 				}
+
 				Future<Map<String,Integer>> tryAcquireGadget = publish.sendEvent(new GadgetAvailableEvent(info.getGadget()));
-				if ( tryAcquireGadget == null || tryAcquireGadget.get()==null || tryAcquireGadget.get().get("acquired") == 0 || currentTick >= info.getTimeExpired()) {
+				if ( tryAcquireGadget == null || tryAcquireGadget.get()==null
+						|| tryAcquireGadget.get().get("acquired") == 0 || currentTick >= info.getTimeExpired()) {
+
+					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireGadget"); //TODO: delete before submission
 					publish.sendEvent(new ReleaseAgentsEvent(info.getSerialAgentsNumbers()));
 					break;
 				}
+				//all conditions ok, mission to be executed
 
 				publish.sendEvent(new SendAgentsEvent(info.getSerialAgentsNumbers(),info.getDuration()));
 				Report report = createReport(info, tryAcquireAgents, tryAcquireGadget);
 				//ass method to creat report & make code readable
 				diary.addReport(report);
+
 				//TODO: ALON: 22.12 11:00
-				System.out.println("M " + serial + " succeeded to execute the mission " + info.getName()); //TODO: delete before submission
 				isSucceed = true;
 				break;	//finished handling the mission
+
+
 			}
 			complete(e, isSucceed);//TODO: ALON: 22.12 11:00
+			System.out.println("M " + serial + ", " + info.getName() + " -> end()"); //TODO: delete before submission
 			System.out.println("M " + serial + " succeeded mission " + info.getName() + "? " + isSucceed); //TODO: delete before submission
 
 

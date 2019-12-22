@@ -36,6 +36,8 @@ public class Q extends Subscriber {
 
 	@Override
 	protected void initialize() {
+		System.out.println("Q initialized"); //TODO: delete before submission
+
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
 				System.out.println("terminate Q executed"); //TODO: delete before submission

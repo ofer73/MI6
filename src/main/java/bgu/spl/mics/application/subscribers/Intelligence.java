@@ -35,6 +35,7 @@ public class Intelligence extends Subscriber {
 
 	@Override
 	protected void initialize() {
+		System.out.println("Intelligence initialized"); //TODO: delete before submission
 		SimplePublisher publish = getSimplePublisher();
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {

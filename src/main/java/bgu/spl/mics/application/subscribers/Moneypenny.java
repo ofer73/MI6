@@ -43,11 +43,13 @@ public class Moneypenny extends Subscriber {
 		);
 		subscribeEvent(SendAgentsEvent.class,(SendAgentsEvent e)->{
 			squad.sendAgents(e.getAgents(),e.getDuration());
+			System.out.println("Monepenny " + serial + " SendAgents"); //TODO: delete before submission
 			complete(e, "SendAgents -> executed");//TODO: ALON: 22.12 11:00
 
 		});
 		subscribeEvent(ReleaseAgentsEvent.class,(ReleaseAgentsEvent e)->{
 			squad.releaseAgents(e.getAgents());
+			System.out.println("Monepenny " + serial + " ReleaseAgents"); //TODO: delete before submission
 			complete(e, "ReleaseAgents -> executed");//TODO: ALON: 22.12 11:00
 		});
 	}

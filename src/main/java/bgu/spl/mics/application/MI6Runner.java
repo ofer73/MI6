@@ -49,7 +49,7 @@ public class MI6Runner {
 //               intel.start();
 //               //System.out.println("after start"); //TODO: delete before submission
 //           }
-           System.out.println("created all intelligence"); //TODO: delete before submission
+           //System.out.println("created all intelligence"); //TODO: delete before submission
            //init Q:
            Thread qThread = new Thread(new Q());
            qThread.start();
@@ -81,7 +81,7 @@ public class MI6Runner {
            Thread timeService = new Thread(new TimeService(time)); //TODO: check is right
            timeService.start();
 
-           System.out.println("All participants initialized"); //TODO: delete before submission
+           //System.out.println("All participants initialized"); //TODO: delete before submission
 
        }
        catch (IOException e){}
