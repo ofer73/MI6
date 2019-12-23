@@ -42,8 +42,10 @@ public class Squad {
 	 */
 	public void releaseAgents(List<String> serials){
 		synchronized (this) {
-			for (String s : serials)
+			for (String s : serials) {
 				agents.get(s).release();
+			}
+			System.out.println("Squad: Released " + serials.toString()); //TODO: delete before submission
 			this.notifyAll();
 		}
 	}

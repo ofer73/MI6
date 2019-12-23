@@ -28,18 +28,37 @@ public class Moneypenny extends Subscriber {
 	protected void initialize() {
 		System.out.println("Moneypenny " + serial + " initialized"); //TODO: delete before submission
 
-		subscribeTickBroadcast();
-
-		subscribeAgentAvailableEvent();
-
-		subscribeSendAgentsEvent();
-
-		subscribeReleaseAgentsEvent();
-
+		subscribeOriginal();
 
 		//TODO: ALON 23.12 check which solution is better
-		//solAlternative();
+		subscribeAlternative();
 	}
+
+	/**
+	 * subscribing all events & broadcasts
+	 */
+	private void subscribeOriginal() {
+		subscribeTickBroadcast();
+		subscribeAgentAvailableEvent();
+		subscribeSendAgentsEvent();
+		subscribeReleaseAgentsEvent();
+	}
+
+	/**
+	 * handling subscribing event for Moneypenny, with the alternaive solution
+	 * which was given in the forum
+	 */
+
+	private void subscribeAlternative() {
+		if (serial % 2 == 0) { //TODO: ALON 23.12 impl
+			subscribeAgentAvailableEvent();
+		} else {
+			subscribeSendAgentsEvent();
+
+			subscribeReleaseAgentsEvent();
+		}
+	}
+
 
 	/**
 	 * next 4 methods are private methods
@@ -85,21 +104,6 @@ public class Moneypenny extends Subscriber {
 
 
 		});
-	}
-
-	/**
-	 * handling subscribing event for Moneypenny, with the alternaive solution
-	 * which was given in the forum
-	 */
-
-	private void solAlternative() {
-		if (serial % 2 == 0) { //TODO: ALON 23.12 impl
-			subscribeAgentAvailableEvent();
-		} else {
-			subscribeSendAgentsEvent();
-
-			subscribeReleaseAgentsEvent();
-		}
 	}
 
 	/**
