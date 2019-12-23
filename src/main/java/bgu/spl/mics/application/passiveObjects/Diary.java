@@ -75,7 +75,7 @@ public class Diary {
 	 */
 	public void printToFile(String filename){
 		try {
-			System.out.println("diary -> printToFile()"); //TODO: delete before submission
+			System.out.println("	diary -> printToFile()"); //TODO: delete before submission
 			Writer writer = new FileWriter(filename);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(reportList,writer);

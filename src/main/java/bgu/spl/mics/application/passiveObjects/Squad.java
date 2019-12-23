@@ -45,7 +45,7 @@ public class Squad {
 			for (String s : serials) {
 				agents.get(s).release();
 			}
-			System.out.println("Squad: Released " + serials.toString()); //TODO: delete before submission
+			System.out.println("		Squad: Released " + serials.toString()); //TODO: delete before submission
 			this.notifyAll();
 		}
 	}
@@ -55,13 +55,16 @@ public class Squad {
 	 * @param time   time ticks to sleep
 	 */
 	public void sendAgents(List<String> serials, int time){
-		System.out.println("Squad: sendAgents -> execute"); //TODO: delete before submission
-		getAgents(serials);
+		System.out.println("		Squad: sendAgents "+ serials.toString() + " -> execute"); //TODO: delete before submission
+		//getAgents(serials); TODO: check if need to delete
+
 		try {
 			Thread.currentThread().sleep(time);
 		}
 		catch (InterruptedException e){}
 		releaseAgents(serials);
+
+	//	System.out.println("Squad: release after sendAgents -> execute"); //TODO: delete before submission
 	}
 
 	/**
@@ -81,7 +84,7 @@ public class Squad {
 				allAvailable=true;
 				for (String s : serials) { //check if all agents are available to acquire
 					if (!agents.get(s).isAvailable()) {
-						System.out.println("Squad: tried acquire() Agents, but " + agents.get(s).getSerialNumber() + " unavailable -> wait()"); //TODO: delete before submission
+						System.out.println("		Squad: tried acquire() Agents " + serials.toString() + ", but " + agents.get(s).getSerialNumber() + " unavailable -> wait()"); //TODO: delete before submission
 						allAvailable = false;
 						break;
 					}
@@ -96,7 +99,7 @@ public class Squad {
 					for (String s : serials){
 						agents.get(s).acquire();
 					}
-					System.out.println("Squad: all agents " +serials.toString()+ " available. agents AND acquired()"); //TODO: delete before submission
+					System.out.println("		Squad: all agents " +serials.toString()+ " are available AND acquired()"); //TODO: delete before submission
 
 				}
 			}

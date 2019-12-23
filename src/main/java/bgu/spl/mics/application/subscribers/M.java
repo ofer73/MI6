@@ -45,9 +45,11 @@ public class M extends Subscriber {
 		subscribeEvent(MissionReceivedEvent.class,(MissionReceivedEvent e)->{
 			MissionInfo info = e.getInfo();
 			diary.incrementTotal(); //incrementing whether it succeed or not
+
 			boolean isSucceed = false; //TODO ALON: added 22.12 11:00
 			while (true) { // while() is implemented in order to abort if something fails. only 1 iteration is executed
-				System.out.println("M " + serial + ": " + info.getName() + " -> start()"); //TODO: delete before submission
+				System.out.println("M " + serial + ": " + info.getName() + " -> start() \n" +
+						"					requires: "+ e.getInfo().getGadget().toString() + " gadget, " + e.getInfo().getSerialAgentsNumbers().toString() + "agents" ); //TODO: delete before submission
 
 
 				Future<Map<String,Object>> tryAcquireAgents = publish.sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers()));
@@ -62,12 +64,18 @@ public class M extends Subscriber {
 						|| tryAcquireGadget.get().get("acquired") == 0 || currentTick >= info.getTimeExpired()) {
 
 					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireGadget"); //TODO: delete before submission
-					publish.sendEvent(new ReleaseAgentsEvent(info.getSerialAgentsNumbers()));
+
+					((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(false); //TODO: ALON 23.12 NEW IMPL
+					//publish.sendEvent(new ReleaseAgentsEvent(info.getSerialAgentsNumbers()));
 					break;
 				}
 				//all conditions ok, mission to be executed
 
-				publish.sendEvent(new SendAgentsEvent(info.getSerialAgentsNumbers(),info.getDuration()));
+				//TODO: ALON: 23.12 15:00 NEW IMPLEMENTATION:
+				((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(true);
+				//publish.sendEvent(new SendAgentsEvent(info.getSerialAgentsNumbers(),info.getDuration()));
+
+
 				Report report = createReport(info, tryAcquireAgents, tryAcquireGadget);
 				//ass method to creat report & make code readable
 				diary.addReport(report);

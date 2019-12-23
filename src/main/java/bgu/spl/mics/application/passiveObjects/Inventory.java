@@ -74,6 +74,7 @@ public class Inventory {
 			gson.toJson(gadgets,writer);
 			writer.flush();
 			writer.close();
+			System.out.println("	inventory -> printToFile()"); //TODO: delete before submission
 		}
 		catch (IOException e){
 		}
