@@ -49,31 +49,42 @@ public class M extends Subscriber {
 			boolean isSucceed = false; //TODO ALON: added 22.12 11:00
 			while (true) { // while() is implemented in order to abort if something fails. only 1 iteration is executed
 				System.out.println("M " + serial + ": " + info.getName() + " -> start() \n" +
-						"					requires: "+ e.getInfo().getGadget().toString() + " gadget, " + e.getInfo().getSerialAgentsNumbers().toString() + "agents" ); //TODO: delete before submission
+						"					requires: "+ e.getInfo().getGadget().toString() + " gadget, " + e.getInfo().getSerialAgentsNumbers().toString() + "agents \n 						CurrentTick: " + currentTick ); //TODO: delete before submission
 
 
-				Future<Map<String,Object>> tryAcquireAgents = publish.sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers()));
+				Future<Map<String,Object>> tryAcquireAgents = publish.sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers(),info.getDuration() ) );
 
-				if ( tryAcquireAgents == null || tryAcquireAgents.get() == null || (Integer) tryAcquireAgents.get().get("acquired") == 0) {
+				if ( tryAcquireAgents == null || tryAcquireAgents.get() == null ) {
+					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireAgents + TERMINATE()"); //TODO: delete before submission
+					terminate();
+					break;
+				} //it's a sign that Armageddon is here
+
+				if ((Integer) tryAcquireAgents.get().get("acquired") == 0) {
 					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireAgents"); //TODO: delete before submission
 					break;
 				}
 
 				Future<Map<String,Integer>> tryAcquireGadget = publish.sendEvent(new GadgetAvailableEvent(info.getGadget()));
-				if ( tryAcquireGadget == null || tryAcquireGadget.get()==null
-						|| tryAcquireGadget.get().get("acquired") == 0 || currentTick >= info.getTimeExpired()) {
-
-					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireGadget"); //TODO: delete before submission
+				if ( tryAcquireGadget == null || tryAcquireGadget.get()==null) {
+					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireGadget + TERMINATE()"); //TODO: delete before submission
 
 					((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(false); //TODO: ALON 23.12 NEW IMPL
-					//publish.sendEvent(new ReleaseAgentsEvent(info.getSerialAgentsNumbers()));
+					break;
+				}  //it's a sign that Armageddon is here
+
+				if ( tryAcquireGadget.get().get("acquired") == 0 || currentTick >= info.getTimeExpired()) {
+
+					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireGadget"); //TODO: delete before submission
+					((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(false); //TODO: ALON 23.12 NEW IMPL
 					break;
 				}
+
 				//all conditions ok, mission to be executed
 
 				//TODO: ALON: 23.12 15:00 NEW IMPLEMENTATION:
 				((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(true);
-				//publish.sendEvent(new SendAgentsEvent(info.getSerialAgentsNumbers(),info.getDuration()));
+				//publish.sendEvent(new SendAgentsEvent(info.getSerialAgentsNumbers(),info.getDuration())); //TODO DELETE LINE
 
 
 				Report report = createReport(info, tryAcquireAgents, tryAcquireGadget);
@@ -113,7 +124,7 @@ public class M extends Subscriber {
 		report.setAgentsNames((List<String>) tryAcquireAgents.get().get("names")); //TODO ALON: check what is wrong
 		report.setGadgetName(info.getGadget());
 		report.setTimeIssued(info.getTimeIssued());
-		report.setQTime(tryAcquireGadget.get().get("timeTick"));
+		report.setqTime(tryAcquireGadget.get().get("timeTick"));
 		report.setTimeCreated(this.currentTick);
 		return report;
 	}

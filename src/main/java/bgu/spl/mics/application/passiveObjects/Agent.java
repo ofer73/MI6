@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * You may add ONLY private fields and methods to this class.
  */
 public class Agent {
-	private AtomicBoolean available = new AtomicBoolean(true);
+	private boolean available = true;
 	private String name = "";
 	private String serialNumber ="";
 
@@ -54,14 +54,14 @@ public class Agent {
      * @return if the agent is available.
      */
 	public boolean isAvailable() {
-		return available.get();
+		return available;
 	}
 
 	/**
 	 * Acquires an agent.
 	 */
 	public void acquire(){
-		available.compareAndSet(true,false);
+		available=false;
 
 	}
 
@@ -69,6 +69,6 @@ public class Agent {
 	 * Releases an agent.
 	 */
 	public void release(){
-		available.compareAndSet(false,true);
+		available=true;
 	}
 }

@@ -115,7 +115,11 @@ public class Squad {
     public List<String> getAgentsNames(List<String> serials){
 		List<String> newList = new LinkedList<>();
 		for (String serialNumber : serials){
-			newList.add(this.agents.get(serialNumber).getName()); //adding the name of agent with the serialNumber
+		//if(this.agents.containsKey(serialNumber)) { //TODO: Check why this loop throws nullpointerException
+			Agent tmp = this.agents.get(serialNumber);
+			String agentName = tmp.getName();
+			newList.add(agentName); //adding the name of agent with the serialNumber
+		//}
 		}
 	    return newList;
     }

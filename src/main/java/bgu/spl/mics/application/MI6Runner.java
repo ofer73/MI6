@@ -26,7 +26,7 @@ public class MI6Runner {
     public static void main(String[] args) {
        Gson gson=new Gson();
 
-       try(Reader reader = new FileReader("C:\\Users\\User\\Documents\\מדעי המחשב - סמסטר ג\\SPL\\Ass2/input201[3].json")){
+       try(Reader reader = new FileReader("/users/studs/bsc/2020/mosesofe/IdeaProjects/MI6/SPL201test1.json")){
            JsonParser jsonParser = gson.fromJson(reader,JsonParser.class);
            Inventory inventory = Inventory.getInstance();
            inventory.load(jsonParser.getInventory());
@@ -39,17 +39,6 @@ public class MI6Runner {
            Intelligence[] intelligences = service.getIntelligence();
            int time = service.getTime();
 
-//           //init TimeService
-//           Thread timeService = new Thread(new TimeService(time)); //TODO: moved down to prevent problems
-//           timeService.start();
-//           //init Intelligence:
-//           for( Intelligence newInfo : intelligences){
-//               Thread intel = new Thread(new Intelligence(newInfo.getMissions()));
-//               //System.out.println("before start"); //TODO: delete before submission
-//               intel.start();
-//               //System.out.println("after start"); //TODO: delete before submission
-//           }
-           //System.out.println("created all intelligence"); //TODO: delete before submission
            //init Q:
            Thread qThread = new Thread(new Q());
            qThread.start();

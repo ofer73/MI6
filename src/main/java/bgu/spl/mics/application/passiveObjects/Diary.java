@@ -6,13 +6,8 @@ import com.google.gson.GsonBuilder;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -26,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Diary {
 
 	//TODO ALON: some implements in 19.12, not finished
-	private List<Report> reportList = new LinkedList<>();
+	private List<Report> reports = new LinkedList<>();
 	private AtomicInteger total = new AtomicInteger(0);
 	//not sure if the right impl for the list
 
@@ -49,8 +44,8 @@ public class Diary {
 	 */
 
 	public List<Report> getReports() {
-		synchronized (reportList){
-			return reportList;
+		synchronized (reports){
+			return reports;
 		} //TODO check if sync is needed
 	}
 
@@ -60,8 +55,8 @@ public class Diary {
 	 */
 	public void addReport(Report reportToAdd){
 		if(reportToAdd!=null) {
-			synchronized (reportList) {
-				reportList.add(reportToAdd);
+			synchronized (reports) {
+				reports.add(reportToAdd);
 			}
 		}
 	}
@@ -77,8 +72,8 @@ public class Diary {
 		try {
 			System.out.println("	diary -> printToFile()"); //TODO: delete before submission
 			Writer writer = new FileWriter(filename);
-			Gson gson = new GsonBuilder().create();
-			gson.toJson(reportList,writer);
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			gson.toJson(this,writer);
 			writer.flush();
 			writer.close();
 

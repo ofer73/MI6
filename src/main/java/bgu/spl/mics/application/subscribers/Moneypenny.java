@@ -74,16 +74,10 @@ public class Moneypenny extends Subscriber {
 			complete(e, map); //finished checking AvailableAgentsEvent, continue to process whether send/ release:
 
 
-			synchronized (isSend){
-				while (!isSend.isDone()){
-					try {
-						isSend.wait();
-					} catch (InterruptedException ex) {}
-				}
-			}
+
 			boolean result =  isSend.get();
 
-			if (result){
+			if (result){ //sendAgents or releaseAgents
 				System.out.println("	Moneypenny " + serial + ": SendAgents "+ e.getAgents().toString()  +" (and released automatically)"); //TODO: delete before submission
 				squad.sendAgents(e.getAgents(),e.getDuration());
 			} else {
@@ -94,18 +88,6 @@ public class Moneypenny extends Subscriber {
 
 		});
 	}
-
-	// TODO: check if necessary (not suppose to, because we changed impl) :
-//
-//	private void subscribeAlternative() {
-//		if (serial % 2 == 0) { //TODO: ALON 23.12 impl
-//			subscribeAgentAvailableEvent();
-//		} else {
-//			subscribeSendAgentsEvent();
-//
-//			subscribeReleaseAgentsEvent();
-//		}
-//	}
 
 	/**
 	 * getter
