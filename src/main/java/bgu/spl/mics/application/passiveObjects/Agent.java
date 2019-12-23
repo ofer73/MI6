@@ -61,7 +61,7 @@ public class Agent {
 	 * Acquires an agent.
 	 */
 	public void acquire(){
-		available.compareAndSet(false,true);
+		available.compareAndSet(true,false);
 
 	}
 
@@ -69,6 +69,6 @@ public class Agent {
 	 * Releases an agent.
 	 */
 	public void release(){
-		available.compareAndSet(true,false);
+		available.compareAndSet(false,true);
 	}
 }

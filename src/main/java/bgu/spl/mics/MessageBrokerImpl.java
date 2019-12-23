@@ -1,5 +1,10 @@
 package bgu.spl.mics;
 
+import bgu.spl.mics.application.messages.MissionReceivedEvent;
+import bgu.spl.mics.application.messages.ReleaseAgentsEvent;
+import bgu.spl.mics.application.messages.SendAgentsEvent;
+import bgu.spl.mics.application.subscribers.Moneypenny;
+
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -79,9 +84,20 @@ public class MessageBrokerImpl implements MessageBroker {
 		eventMap.putIfAbsent(e.getClass(), new ConcurrentLinkedQueue<>());
 		synchronized(eventMap.get(e.getClass())) {//lock e's subscriber queue
 			Subscriber s = eventMap.get(e.getClass()).poll(); //remove head
+
 			if (s == null ) { //means no-one subscribed to solve such event
 				return null;
 			}
+//
+//
+//			if (e instanceof MissionReceivedEvent) { //TODO: DELETE before submission
+//				System.out.println("Monepenny " + ((Moneypenny) s).getSerial() + ": AgentAvailableEvent added to my queue"); //TODO: delete before submission
+//			} else if (e instanceof SendAgentsEvent) { //TODO: DELETE before submission
+//				System.out.println("Monepenny " + ((Moneypenny) s).getSerial() + ": SendAgentsEvent -> added queue"); //TODO: delete before submission
+//			} else if (e instanceof ReleaseAgentsEvent) { //TODO: DELETE before submission
+//				System.out.println("Monepenny " + ((Moneypenny) s).getSerial() + ": AgentAvailableEvent -> added to queue"); //TODO: delete before submission
+//			}
+
 			synchronized (s) {
 				if (!messageMap.containsKey(s)) { //means no-one subscribed to solve such event
 					return null;

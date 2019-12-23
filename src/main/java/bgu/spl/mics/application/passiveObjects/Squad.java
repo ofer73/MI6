@@ -53,6 +53,7 @@ public class Squad {
 	 * @param time   time ticks to sleep
 	 */
 	public void sendAgents(List<String> serials, int time){
+		System.out.println("Squad: sendAgents -> execute"); //TODO: delete before submission
 		getAgents(serials);
 		try {
 			Thread.currentThread().sleep(time);
@@ -90,10 +91,11 @@ public class Squad {
 					} catch (InterruptedException e) {}
 
 				}else{ //else acquire all
-					System.out.println("Squad: all agents " +serials.toString()+ " available. agents -> acquire()"); //TODO: delete before submission
 					for (String s : serials){
 						agents.get(s).acquire();
 					}
+					System.out.println("Squad: all agents " +serials.toString()+ " available. agents AND acquired()"); //TODO: delete before submission
+
 				}
 			}
 		}
