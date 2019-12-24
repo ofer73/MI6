@@ -40,6 +40,7 @@ public class TimeService extends Publisher {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
+				System.out.println("TimeService -> send() Tick " + tickNumber + (tickNumber==duration? " = FINAL TICK!" : "") ); //TODO: delete before submission
 				getSimplePublisher().sendBroadcast(new TickBroadcast(tickNumber, tickNumber == duration));
 				if (tickNumber == duration)
 					timer.cancel();

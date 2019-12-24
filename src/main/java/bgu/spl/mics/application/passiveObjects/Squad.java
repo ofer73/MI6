@@ -59,7 +59,7 @@ public class Squad {
 		//getAgents(serials); TODO: check if need to delete
 
 		try {
-			Thread.currentThread().sleep(time);
+			Thread.currentThread().sleep(time * 100);
 		}
 		catch (InterruptedException e){}
 		releaseAgents(serials);

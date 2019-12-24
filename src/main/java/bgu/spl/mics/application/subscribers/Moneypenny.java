@@ -57,7 +57,10 @@ public class Moneypenny extends Subscriber {
 		});
 	}
 
-
+	/**
+	 * private method to subscribe AgentAvailableEvent,
+	 * and make register() clean and readable
+	 */
 	private void subscribeAgentAvailableEvent() {
 		subscribeEvent(AgentsAvailableEvent.class, (AgentsAvailableEvent e) -> {
 			System.out.println("	Moneypenny " + serial + ": AgentAvailableEvent -> " + e.getAgents().toString() + ""); //TODO: delete before submission

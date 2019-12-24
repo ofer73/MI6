@@ -49,7 +49,7 @@ public class M extends Subscriber {
 			boolean isSucceed = false; //TODO ALON: added 22.12 11:00
 			while (true) { // while() is implemented in order to abort if something fails. only 1 iteration is executed
 				System.out.println("M " + serial + ": " + info.getName() + " -> start() \n" +
-						"					requires: "+ e.getInfo().getGadget().toString() + " gadget, " + e.getInfo().getSerialAgentsNumbers().toString() + "agents \n 						CurrentTick: " + currentTick ); //TODO: delete before submission
+						"					requires: "+ e.getInfo().getGadget().toString() + " gadget, " + e.getInfo().getSerialAgentsNumbers().toString() + "agents \n 						M " + serial + " CurrentTick: " + currentTick ); //TODO: delete before submission
 
 
 				Future<Map<String,Object>> tryAcquireAgents = publish.sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers(),info.getDuration() ) );
