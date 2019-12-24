@@ -10,6 +10,7 @@ public class AgentsAvailableEvent implements Event<Map<String,Object>> {
     int duration;
 
     public AgentsAvailableEvent(List<String> agents, int duration) {
+        agents.sort(String::compareTo); //TODO: maybe remove this sorting
         this.agents = agents;
         this.duration = duration;
     }

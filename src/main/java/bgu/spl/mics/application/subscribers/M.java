@@ -57,6 +57,7 @@ public class M extends Subscriber {
 				if ( tryAcquireAgents == null || tryAcquireAgents.get() == null ) {
 					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireAgents + TERMINATE()"); //TODO: delete before submission
 					terminate();
+					diary.printToFile("diaryOutputFile.json");
 					break;
 				} //it's a sign that Armageddon is here
 
@@ -68,8 +69,9 @@ public class M extends Subscriber {
 				Future<Map<String,Integer>> tryAcquireGadget = publish.sendEvent(new GadgetAvailableEvent(info.getGadget()));
 				if ( tryAcquireGadget == null || tryAcquireGadget.get()==null) {
 					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireGadget + TERMINATE()"); //TODO: delete before submission
+					((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(null); //TODO: ALON 23.12 NEW IMPL
 					terminate();
-					((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(false); //TODO: ALON 23.12 NEW IMPL
+					diary.printToFile("diaryOutputFile.json");
 					break;
 				}  //it's a sign that Armageddon is here
 
@@ -83,7 +85,7 @@ public class M extends Subscriber {
 				//all conditions ok, mission to be executed
 
 				//TODO: ALON: 23.12 15:00 NEW IMPLEMENTATION Ofer Added 24.12
-				if(tryAcquireGadget.get().get("acquired") == 1) {
+				if(tryAcquireGadget.get().get("acquired") == 1 ) {
 					((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(true);
 					//publish.sendEvent(new SendAgentsEvent(info.getSerialAgentsNumbers(),info.getDuration())); //TODO DELETE LINE
 

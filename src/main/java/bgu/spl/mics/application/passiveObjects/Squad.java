@@ -73,7 +73,6 @@ public class Squad {
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
 	public boolean getAgents(List<String> serials){
-
 		for(String s:serials){
 			if(!agents.containsKey(s)) //check that squad contains all agents
 				return false;
@@ -95,12 +94,12 @@ public class Squad {
 						this.wait();
 					} catch (InterruptedException e) {}
 
-				}else{ //else acquire all
+				}
+				else{ //else acquire all
 					for (String s : serials){
 						agents.get(s).acquire();
 					}
 					System.out.println("		Squad: all agents " +serials.toString()+ " are available AND acquired()"); //TODO: delete before submission
-
 				}
 			}
 		}
@@ -123,5 +122,4 @@ public class Squad {
 		}
 	    return newList;
     }
-
 }

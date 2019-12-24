@@ -26,7 +26,7 @@ public class MI6Runner {
     public static void main(String[] args) {
        Gson gson=new Gson();
 
-       try(Reader reader = new FileReader("C:\\Users\\User\\Documents\\מדעי המחשב - סמסטר ג\\SPL\\Ass2/SPL201test2.json")){
+       try(Reader reader = new FileReader("/users/studs/bsc/2020/mosesofe/IdeaProjects/MI6/tamirJson1.json")){
            JsonParser jsonParser = gson.fromJson(reader,JsonParser.class);
            Inventory inventory = Inventory.getInstance();
            inventory.load(jsonParser.getInventory());

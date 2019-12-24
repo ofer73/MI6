@@ -78,9 +78,12 @@ public class Moneypenny extends Subscriber {
 				map.put("future", isSend);
 				System.out.println("	Moneypenny " + serial + ": AgentAvailableEvent -> " + e.getAgents().toString() + " result: " + map.get("acquired")); //TODO: delete before submission
 				complete(e, map); //finished checking AvailableAgentsEvent, continue to process whether send/ release:
-				boolean result =  isSend.get();
-
-				if (result){ //sendAgents or releaseAgents
+				if(isSend==null||isSend.get()==null){
+					squad.releaseAgents(e.getAgents());
+					terminate();
+					System.out.println("Monneypenny "+serial+"is terminating because of M which terminated because of Q");
+				}
+				else if (isSend.get()){ //sendAgents or releaseAgents
 					System.out.println("	Moneypenny " + serial + ": SendAgents "+ e.getAgents().toString()  +" (and released automatically)"); //TODO: delete before submission
 					squad.sendAgents(e.getAgents(),e.getDuration());
 				} else {
