@@ -90,6 +90,7 @@ public class M extends Subscriber {
 
 					Report report = createReport(info, tryAcquireAgents, tryAcquireGadget);
 					//ass method to creat report & make code readable
+					System.out.println("M " + serial + " add to report: " + info.getName()); //TODO: delete before submission
 					diary.addReport(report);
 
 					//TODO: ALON: 22.12 11:00
