@@ -41,6 +41,7 @@ public class Q extends Subscriber {
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
 				System.out.println("terminate Q executed"); //TODO: delete before submission
+				System.out.println("Current Tick: "+currentTick);
 				terminate();
 				inv.printToFile("inventoryOutputFile.json");
 			} else {

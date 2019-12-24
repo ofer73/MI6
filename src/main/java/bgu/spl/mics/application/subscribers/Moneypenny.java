@@ -65,27 +65,26 @@ public class Moneypenny extends Subscriber {
 			Map<String, Object> map = new HashMap<>();
 			map.put("serial", serial);
 			map.put("acquired", squad.getAgents(e.getAgents()) ? 1 : 0);
-			map.put("names", squad.getAgentsNames(e.getAgents())); //return a list of names (of agents)
+			if(map.get("acquired").equals(0)){
+				map.put("future",null);
+				complete(e,map);
+			} //TODO Ofer : added now 24.12
+			else {
+				map.put("names", squad.getAgentsNames(e.getAgents())); //return a list of names (of agents)
+				Future<Boolean> isSend = new Future<>(); //TODO ALON: 23.12 NEW IMPLEMENTATION
+				map.put("future", isSend);
+				System.out.println("	Moneypenny " + serial + ": AgentAvailableEvent -> " + e.getAgents().toString() + " result: " + map.get("acquired")); //TODO: delete before submission
+				complete(e, map); //finished checking AvailableAgentsEvent, continue to process whether send/ release:
+				boolean result =  isSend.get();
 
-			Future<Boolean> isSend = new Future<>(); //TODO ALON: 23.12 NEW IMPLEMENTATION
-			map.put("future", isSend);
-
-			System.out.println("	Moneypenny " + serial + ": AgentAvailableEvent -> " + e.getAgents().toString() + " result: " + map.get("acquired")); //TODO: delete before submission
-			complete(e, map); //finished checking AvailableAgentsEvent, continue to process whether send/ release:
-
-
-
-			boolean result =  isSend.get();
-
-			if (result){ //sendAgents or releaseAgents
-				System.out.println("	Moneypenny " + serial + ": SendAgents "+ e.getAgents().toString()  +" (and released automatically)"); //TODO: delete before submission
-				squad.sendAgents(e.getAgents(),e.getDuration());
-			} else {
-				System.out.println("	Moneypenny " + serial + ": ReleaseAgents " + e.getAgents().toString()  +" (without sending to mission)"); //TODO: delete before submission
-				squad.releaseAgents(e.getAgents());
+				if (result){ //sendAgents or releaseAgents
+					System.out.println("	Moneypenny " + serial + ": SendAgents "+ e.getAgents().toString()  +" (and released automatically)"); //TODO: delete before submission
+					squad.sendAgents(e.getAgents(),e.getDuration());
+				} else {
+					System.out.println("	Moneypenny " + serial + ": ReleaseAgents " + e.getAgents().toString()  +" (without sending to mission)"); //TODO: delete before submission
+					squad.releaseAgents(e.getAgents());
+				}
 			}
-
-
 		});
 	}
 

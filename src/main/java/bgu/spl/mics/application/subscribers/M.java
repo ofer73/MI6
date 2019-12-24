@@ -68,7 +68,7 @@ public class M extends Subscriber {
 				Future<Map<String,Integer>> tryAcquireGadget = publish.sendEvent(new GadgetAvailableEvent(info.getGadget()));
 				if ( tryAcquireGadget == null || tryAcquireGadget.get()==null) {
 					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireGadget + TERMINATE()"); //TODO: delete before submission
-
+					terminate();
 					((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(false); //TODO: ALON 23.12 NEW IMPL
 					break;
 				}  //it's a sign that Armageddon is here
@@ -82,19 +82,20 @@ public class M extends Subscriber {
 
 				//all conditions ok, mission to be executed
 
-				//TODO: ALON: 23.12 15:00 NEW IMPLEMENTATION:
-				((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(true);
-				//publish.sendEvent(new SendAgentsEvent(info.getSerialAgentsNumbers(),info.getDuration())); //TODO DELETE LINE
+				//TODO: ALON: 23.12 15:00 NEW IMPLEMENTATION Ofer Added 24.12
+				if(tryAcquireGadget.get().get("acquired") == 1) {
+					((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(true);
+					//publish.sendEvent(new SendAgentsEvent(info.getSerialAgentsNumbers(),info.getDuration())); //TODO DELETE LINE
 
 
-				Report report = createReport(info, tryAcquireAgents, tryAcquireGadget);
-				//ass method to creat report & make code readable
-				diary.addReport(report);
+					Report report = createReport(info, tryAcquireAgents, tryAcquireGadget);
+					//ass method to creat report & make code readable
+					diary.addReport(report);
 
-				//TODO: ALON: 22.12 11:00
-				isSucceed = true;
-				break;	//finished handling the mission
-
+					//TODO: ALON: 22.12 11:00
+					isSucceed = true;
+					break;    //finished handling the mission
+				}
 
 			}
 			complete(e, isSucceed);//TODO: ALON: 22.12 11:00
