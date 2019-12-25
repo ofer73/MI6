@@ -36,7 +36,7 @@ public class M extends Subscriber {
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
 				System.out.println("terminate M " + serial + " executed"); //TODO: delete before submission
-				diary.printToFile("diaryOutputFile.json");
+				//diary.printToFile("diaryOutputFile.json");
 				terminate();
 			} else {
 				currentTick = tick.getTickNumber();
@@ -57,7 +57,7 @@ public class M extends Subscriber {
 				if ( tryAcquireAgents == null || tryAcquireAgents.get() == null ) {
 					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireAgents + TERMINATE()"); //TODO: delete before submission
 					terminate();
-					diary.printToFile("diaryOutputFile.json");
+					//diary.printToFile("diaryOutputFile.json");
 					break;
 				} //it's a sign that Armageddon is here
 
@@ -67,13 +67,19 @@ public class M extends Subscriber {
 				}
 
 				Future<Map<String,Integer>> tryAcquireGadget = publish.sendEvent(new GadgetAvailableEvent(info.getGadget()));
+				System.out.println((tryAcquireGadget == null) + " YUVAL YUVAL"); //TODO DELETE
+
+
+
 				if ( tryAcquireGadget == null || tryAcquireGadget.get()==null) {
+					System.out.println("	Yuval Margalit 42"); //TODO: delete before submission
 					System.out.println("M " + serial + " failed " + info.getName() + " : tryAcquireGadget + TERMINATE()"); //TODO: delete before submission
 					((Future<Boolean>) tryAcquireAgents.get().get("future")).resolve(null); //TODO: ALON 23.12 NEW IMPL
 					terminate();
-					diary.printToFile("diaryOutputFile.json");
+					//diary.printToFile("diaryOutputFile.json");
 					break;
 				}  //it's a sign that Armageddon is here
+				System.out.println("	Yuval Margalit"); //TODO: delete before submission
 
 				if ( tryAcquireGadget.get().get("acquired") == 0 || currentTick >= info.getTimeExpired()) {
 

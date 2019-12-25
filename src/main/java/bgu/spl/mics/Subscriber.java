@@ -1,5 +1,7 @@
 package bgu.spl.mics;
 
+import bgu.spl.mics.application.passiveObjects.GlobalCounter;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -117,6 +119,7 @@ public abstract class Subscriber extends RunnableSubPub {
         //mb = MessageBrokerImpl.getInstance();
         mb.register(this);
         initialize();
+        GlobalCounter.getInstance().increment();
         while (!terminated) {
             try {
                 Message newMessage = mb.awaitMessage(this);

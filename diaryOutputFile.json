@@ -1,0 +1,20 @@
+{
+  "reports": [
+    {
+      "missionName": "Thunderball",
+      "m": 0,
+      "moneypenny": 1,
+      "agentSerialNumbers": [
+        "007"
+      ],
+      "agentsNames": [
+        "James Bond"
+      ],
+      "gadgetName": "Sky Hook",
+      "timeCreated": 3,
+      "timeIssued": 3,
+      "qTime": 3
+    }
+  ],
+  "total": 2
+}

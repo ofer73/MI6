@@ -59,12 +59,10 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public <T> void complete(Event<T> e, T result) {
-		if(e!=null&&result!=null&&futureMap.containsKey(e)){
-			synchronized (futureMap.get(e)) {
+		if(e!=null && futureMap.containsKey(e)){
 				futureMap.get(e).resolve(result);
-				futureMap.get(e).notifyAll();
 				futureMap.remove(e);
-			}
+
 		}
 	}
 
@@ -88,17 +86,8 @@ public class MessageBrokerImpl implements MessageBroker {
 			if (s == null ) { //means no-one subscribed to solve such event
 				return null;
 			}
-//
-//
-//			if (e instanceof MissionReceivedEvent) { //TODO: DELETE before submission
-//				System.out.println("Monepenny " + ((Moneypenny) s).getSerial() + ": AgentAvailableEvent added to my queue"); //TODO: delete before submission
-//			} else if (e instanceof SendAgentsEvent) { //TODO: DELETE before submission
-//				System.out.println("Monepenny " + ((Moneypenny) s).getSerial() + ": SendAgentsEvent -> added queue"); //TODO: delete before submission
-//			} else if (e instanceof ReleaseAgentsEvent) { //TODO: DELETE before submission
-//				System.out.println("Monepenny " + ((Moneypenny) s).getSerial() + ": AgentAvailableEvent -> added to queue"); //TODO: delete before submission
-//			}
 
-			synchronized (s) {
+//			synchronized (s) {
 				if (!messageMap.containsKey(s)) { //means no-one subscribed to solve such event
 					return null;
 				} else {
@@ -106,9 +95,11 @@ public class MessageBrokerImpl implements MessageBroker {
 					futureMap.put(e, f);
 					eventMap.get(e.getClass()).add(s);//add s to the end of queue
 					messageMap.get(s).offer(e);
+					System.out.println("BROKER: Subscriber " + s.getClass() + " Received a new Message " +e.getClass()); //TODO DELETE
 					return f;
 				}
-			}
+
+//			}
 		}
 	}
 
@@ -122,25 +113,34 @@ public class MessageBrokerImpl implements MessageBroker {
 	public void unregister(Subscriber m) {
 		//TODO check if the change of the signature from message to a class type screw the function, or if this function is very BAD
 		//update: it doesn't work now, need to be fixed
-		synchronized (m) {
+
+		//synchronized (m) {
 			for (Class topic : myTopicsMap.get(m)) {
-				if (Event.class.isAssignableFrom(topic)) {
-					eventMap.get(topic).remove(m);
-				} //the topic is event
-				else {
-					broadcastMap.get(topic).remove(m);
-				} //the topic is a broadCast
+				if (eventMap.containsKey(topic)) {
+					synchronized (eventMap.get(topic)) {//lock e's subscriber queue
+						if (Event.class.isAssignableFrom(topic)) {
+							eventMap.get(topic).remove(m);
+						} //the topic is event
+						else {
+							broadcastMap.get(topic).remove(m);
+						} //the topic is a broadCast
+					}
+				}
 			}
+
 			myTopicsMap.remove(m); //delete m's topic queue
 
 
 			for (Message msgToAvoid : messageMap.get(m)) {
-				if (msgToAvoid instanceof Event)
-					this.complete((Event<? extends Object>) msgToAvoid, null);
+				if (msgToAvoid instanceof Event) {
+					this.complete(((Event)msgToAvoid),null);
+				}
 				//for every msg received after terminate() call, return null to all waiters (on those messages)
 			}
 			messageMap.remove(m); // delete m's message queue
-		}
+			System.out.println("BROKER: Subscriber " + m.getName() + m.getClass() + " FINISHED cleaning my queue"); //TODO DELETE
+
+		//}
 	}
 
 	@Override

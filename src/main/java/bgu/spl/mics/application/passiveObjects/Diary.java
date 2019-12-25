@@ -44,9 +44,7 @@ public class Diary {
 	 */
 
 	public List<Report> getReports() {
-		synchronized (reports){
-			return reports;
-		} //TODO check if sync is needed
+		return reports;
 	}
 
 	/**

@@ -1,0 +1,110 @@
+{
+  "inventory": [
+    "Sky Hook",
+    "Dagger shoe",
+    "Dagger shoe1",
+    "Gun",
+    "Wep",
+    "Wep1",
+    "Beer"
+  ],
+  "services": {
+    "M": 2,
+    "Moneypenny": 2,
+    "intelligence": [
+      {
+        "missions": [
+
+          {
+            "serialAgentsNumbers": ["007"],
+            "duration": 15,
+            "gadget": "Sky Hook",
+            "name": "Thunderball1",
+            "timeExpired": 15,
+            "timeIssued": 3
+          },
+          {
+            "serialAgentsNumbers": ["007"],
+            "duration": 10,
+            "gadget": "Gun",
+            "name": "Thunderball2",
+            "timeExpired": 15,
+            "timeIssued": 6
+          },
+          {
+            "serialAgentsNumbers": ["007"],
+            "duration": 10,
+            "gadget": "Wep",
+            "name": "Thunderball3",
+            "timeExpired": 40,
+            "timeIssued": 7
+          },
+
+          {
+            "serialAgentsNumbers": ["009"],
+            "duration": 10,
+            "gadget": "Beer",
+            "name": "Skyfall",
+            "timeExpired": 45,
+            "timeIssued": 40
+          },
+          {
+            "serialAgentsNumbers": ["007","001"],
+            "duration": 10,
+            "gadget": "Dagger shoe",
+            "name": "Goldfinger",
+            "timeExpired": 60,
+            "timeIssued": 20
+          },
+          {
+            "serialAgentsNumbers": ["006"],
+            "duration": 10,
+            "gadget": "Dagger shoe1",
+            "name": "The World Is Not Enough",
+            "timeExpired": 60,
+            "timeIssued": 20
+          },
+          {
+            "serialAgentsNumbers": ["006"],
+            "duration": 10,
+            "gadget": "Wep1",
+            "name": "Casino Royal",
+            "timeExpired": 100,
+            "timeIssued": 70
+          },
+
+          {
+            "serialAgentsNumbers": ["007"],
+            "duration": 2,
+            "gadget": "Vodka",
+            "name": "From Russia With Love",
+            "timeExpired": 25,
+            "timeIssued": 20
+          }
+        ]
+      }
+    ],
+    "time": 70
+  },
+  "squad": [
+    {
+
+      "name": "James Bond",
+
+      "serialNumber": "007"
+
+    },
+    {
+
+      "name": "Daniel craig",
+      "serialNumber": "006"
+    },
+
+    {
+
+      "name": "sean connery",
+      "serialNumber": "001"
+
+    }
+  ]
+}

@@ -43,7 +43,7 @@ public class Q extends Subscriber {
 				System.out.println("terminate Q executed"); //TODO: delete before submission
 				System.out.println("Q's Current Tick: "+ tick.getTickNumber()); //TODO: delete before submission
 				terminate();
-				inv.printToFile("inventoryOutputFile.json");
+				//inv.printToFile("inventoryOutputFile.json");
 			} else {
 				currentTick = tick.getTickNumber();
 				System.out.println("Q's Current Tick: "+ tick.getTickNumber()); //TODO: delete before submission
