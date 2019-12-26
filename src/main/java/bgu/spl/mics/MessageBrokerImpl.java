@@ -41,7 +41,6 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
-		// TODO check is the next line thread-safe
 		eventMap.putIfAbsent(type, new ConcurrentLinkedQueue<>()); //check
 		eventMap.get(type).add(m);
 		myTopicsMap.get(m).add(type);
@@ -49,7 +48,6 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
-		// TODO Auto-generated method stub
 		broadcastMap.putIfAbsent(type, new ConcurrentLinkedQueue<>());
 		myTopicsMap.get(m).add(type);
 		broadcastMap.get(type).add(m);
@@ -91,11 +89,10 @@ public class MessageBrokerImpl implements MessageBroker {
 				if (!messageMap.containsKey(s)) { //means no-one subscribed to solve such event
 					return null;
 				} else {
-					Future<T> f = new Future<>(); //TODO check how are we suppose to express Future's type
+					Future<T> f = new Future<>();
 					futureMap.put(e, f);
 					eventMap.get(e.getClass()).add(s);//add s to the end of queue
 					messageMap.get(s).offer(e);
-					System.out.println("BROKER: Subscriber " + s.getClass() + " Received a new Message " +e.getClass()); //TODO DELETE
 					return f;
 				}
 
@@ -111,7 +108,6 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void unregister(Subscriber m) {
-		//TODO check if the change of the signature from message to a class type screw the function, or if this function is very BAD
 		//update: it doesn't work now, need to be fixed
 
 		//synchronized (m) {
@@ -138,7 +134,7 @@ public class MessageBrokerImpl implements MessageBroker {
 				//for every msg received after terminate() call, return null to all waiters (on those messages)
 			}
 			messageMap.remove(m); // delete m's message queue
-			System.out.println("BROKER: Subscriber " + m.getName() + m.getClass() + " FINISHED cleaning my queue"); //TODO DELETE
+
 
 		//}
 	}

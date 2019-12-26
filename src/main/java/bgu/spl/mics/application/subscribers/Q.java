@@ -36,21 +36,15 @@ public class Q extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		System.out.println("Q initialized"); //TODO: delete before submission
-
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
-				System.out.println("terminate Q executed"); //TODO: delete before submission
-				System.out.println("Q's Current Tick: "+ tick.getTickNumber()); //TODO: delete before submission
 				terminate();
 				//inv.printToFile("inventoryOutputFile.json");
 			} else {
 				currentTick = tick.getTickNumber();
-				System.out.println("Q's Current Tick: "+ tick.getTickNumber()); //TODO: delete before submission
 			}
 		});
 		subscribeEvent(GadgetAvailableEvent.class,(GadgetAvailableEvent e)->{
-			System.out.println("Q received GadgetAvailableEvent, [ "+ e.getGadgetname() + "] , Current Tick: "+ currentTick); //TODO: delete before submission
 			Map<String,Integer> map=new HashMap<>();
 			map.put("timeTick", currentTick);
 			map.put("acquired", inv.getItem(e.getGadgetname()) ? 1 : 0);

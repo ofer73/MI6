@@ -9,7 +9,6 @@ import java.util.List;
  * You may add ONLY private fields and methods to this class.
  */
 public class MissionInfo {
-	//TODO ALON: added fields and methods 20.12
 	private String name;
 	private List<String> serialAgentsNumbers;
 	private String gadget;
@@ -23,7 +22,6 @@ public class MissionInfo {
      * Sets the name of the mission.
      */
     public void setName(String name) {
-        // TODO Implement this
 		this.name = name;
     }
 
@@ -31,7 +29,6 @@ public class MissionInfo {
      * Retrieves the name of the mission.
      */
 	public String getName() {
-		// TODO Implement this
 		return this.name;
 	}
 
@@ -39,7 +36,6 @@ public class MissionInfo {
      * Sets the serial agent number.
      */
     public void setSerialAgentsNumbers(List<String> serialAgentsNumbers) {
-        // TODO Implement this
 		this.serialAgentsNumbers = serialAgentsNumbers;
     }
 
@@ -47,7 +43,6 @@ public class MissionInfo {
      * Retrieves the serial agent number.
      */
 	public List<String> getSerialAgentsNumbers() {
-		// TODO Implement this
 		return this.serialAgentsNumbers;
 	}
 
@@ -55,7 +50,6 @@ public class MissionInfo {
      * Sets the gadget name.
      */
     public void setGadget(String gadget) {
-        // TODO Implement this
 		this.gadget = gadget;
     }
 
@@ -63,7 +57,6 @@ public class MissionInfo {
      * Retrieves the gadget name.
      */
 	public String getGadget() {
-		// TODO Implement this
 		return this.gadget;
 	}
 
@@ -71,7 +64,6 @@ public class MissionInfo {
      * Sets the time the mission was issued in time ticks.
      */
     public void setTimeIssued(int timeIssued) {
-        // TODO Implement this
 		this.timeIssued = timeIssued;
     }
 
@@ -79,7 +71,6 @@ public class MissionInfo {
      * Retrieves the time the mission was issued in time ticks.
      */
 	public int getTimeIssued() {
-		// TODO Implement this
 		return this.timeIssued;
 	}
 
@@ -87,7 +78,6 @@ public class MissionInfo {
      * Sets the time that if it that time passed the mission should be aborted.
      */
     public void setTimeExpired(int timeExpired) {
-        // TODO Implement this
 		this.timeExpired = timeExpired;
     }
 
@@ -95,7 +85,6 @@ public class MissionInfo {
      * Retrieves the time that if it that time passed the mission should be aborted.
      */
 	public int getTimeExpired() {
-		// TODO Implement this
 		return this.timeExpired;
 	}
 
@@ -103,7 +92,6 @@ public class MissionInfo {
      * Sets the duration of the mission in time-ticks.
      */
     public void setDuration(int duration) {
-        // TODO Implement this
 		this.duration = duration;
     }
 
@@ -111,7 +99,6 @@ public class MissionInfo {
 	 * Retrieves the duration of the mission in time-ticks.
 	 */
 	public int getDuration() {
-		// TODO Implement this
 		return this.duration;
 	}
 }

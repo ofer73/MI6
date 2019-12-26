@@ -45,7 +45,6 @@ public class Squad {
 			for (String s : serials) {
 				agents.get(s).release();
 			}
-			System.out.println("		Squad: Released " + serials.toString()); //TODO: delete before submission
 			this.notifyAll();
 		}
 	}
@@ -55,16 +54,12 @@ public class Squad {
 	 * @param time   time ticks to sleep
 	 */
 	public void sendAgents(List<String> serials, int time){
-		System.out.println("		Squad: sendAgents "+ serials.toString() + " -> execute"); //TODO: delete before submission
-		//getAgents(serials); TODO: check if need to delete
 
 		try {
 			Thread.currentThread().sleep(time * 100);
 		}
 		catch (InterruptedException e){}
 		releaseAgents(serials);
-
-	//	System.out.println("Squad: release after sendAgents -> execute"); //TODO: delete before submission
 	}
 
 	/**
@@ -83,7 +78,6 @@ public class Squad {
 				allAvailable=true;
 				for (String s : serials) { //check if all agents are available to acquire
 					if (!agents.get(s).isAvailable()) {
-						System.out.println("		Squad: tried acquire() Agents " + serials.toString() + ", but " + agents.get(s).getSerialNumber() + " unavailable -> wait()"); //TODO: delete before submission
 						allAvailable = false;
 						break;
 					}
@@ -99,7 +93,6 @@ public class Squad {
 					for (String s : serials){
 						agents.get(s).acquire();
 					}
-					System.out.println("		Squad: all agents " +serials.toString()+ " are available AND acquired()"); //TODO: delete before submission
 				}
 			}
 		}
@@ -114,11 +107,10 @@ public class Squad {
     public List<String> getAgentsNames(List<String> serials){
 		List<String> newList = new LinkedList<>();
 		for (String serialNumber : serials){
-		//if(this.agents.containsKey(serialNumber)) { //TODO: Check why this loop throws nullpointerException
 			Agent tmp = this.agents.get(serialNumber);
 			String agentName = tmp.getName();
 			newList.add(agentName); //adding the name of agent with the serialNumber
-		//}
+
 		}
 	    return newList;
     }

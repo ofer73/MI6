@@ -21,26 +21,21 @@ public class TimeService extends Publisher {
 
 	public TimeService(int duration) {
 		super("TimeService");
-		// TODO Implement this
 		this.duration = duration;
 	}
 
 	@Override
-	protected void initialize() {
-		// TODO Implement this
-		System.out.println("TimeService -> start()");
+	protected void initialize() { //TODO:check if ok its empty
 	}
 
 	@Override
 	public void run() {
-		// TODO ALON: impl 20.12
 		initialize();
 		tickNumber = 1;
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				System.out.println("TimeService -> send() Tick " + tickNumber + (tickNumber==duration? " = FINAL TICK!" : "") ); //TODO: delete before submission
 				getSimplePublisher().sendBroadcast(new TickBroadcast(tickNumber, tickNumber == duration));
 				if (tickNumber == duration)
 					timer.cancel();

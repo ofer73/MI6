@@ -26,10 +26,7 @@ abstract class RunnableSubPub implements Runnable {
         return name;
     }
 
-    /**
-     * The entry point of the publisher/subscriber. TODO: you must complete this code
-     * otherwise you will end up in an infinite loop.
-     */
+
     @Override
     public abstract void run();
 

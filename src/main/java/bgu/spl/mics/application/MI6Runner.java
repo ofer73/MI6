@@ -23,7 +23,7 @@ public class MI6Runner {
     public static void main(String[] args) {
        Gson gson=new Gson();
 
-       try(Reader reader = new FileReader( args[0] )) {
+       try(Reader reader = new FileReader( args[0])) {
            JsonParser jsonParser = gson.fromJson(reader, JsonParser.class);
            Inventory inventory = Inventory.getInstance();
            inventory.load(jsonParser.getInventory());
@@ -87,7 +87,7 @@ public class MI6Runner {
            inventory.printToFile(args[1]);
            diary.printToFile(args[2]);
 
-//           System.out.println("All participants initialized"); //TODO: delete before submission
+
 
        }
        catch (IOException | InterruptedException e){}

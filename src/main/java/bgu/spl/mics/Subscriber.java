@@ -54,7 +54,6 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-        //TODO: implement this.
         if(callback!=null && type!=null) {
             callbackMap.putIfAbsent(type, callback);
             mb.subscribeEvent(type, this);
@@ -110,10 +109,6 @@ public abstract class Subscriber extends RunnableSubPub {
         this.terminated = true;
     }
 
-    /**
-     * The entry point of the Subscriber. TODO: you must complete this code
-     * otherwise you will end up in an infinite loop.
-     */
     @Override
     public final void run() {
         //mb = MessageBrokerImpl.getInstance();
@@ -128,9 +123,7 @@ public abstract class Subscriber extends RunnableSubPub {
                 callback.call(newMessage);
             } catch (InterruptedException e) { }
         }
-        // TODO 19.12 Alon: adding the case it was terminated. check if correct impl
-        //might be a situation that need to be handled if interrupt was thrown, check this case
-        //System.out.println("terminate Subscriber executed -> start unregister"); //TODO: delete before submission
+
         mb.unregister(this);
     }
 

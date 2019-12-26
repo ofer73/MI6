@@ -27,7 +27,6 @@ public class Moneypenny extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		System.out.println("Moneypenny " + serial + " initialized"); //TODO: delete before submission
 		subscribeOriginal();
 	}
 
@@ -51,7 +50,6 @@ public class Moneypenny extends Subscriber {
 	private void subscribeTickBroadcast() {
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
-				System.out.println("terminate Moneypenny " + serial + " executed" ); //TODO: delete before submission
 				terminate();
 			}
 		});
@@ -63,31 +61,25 @@ public class Moneypenny extends Subscriber {
 	 */
 	private void subscribeAgentAvailableEvent() {
 		subscribeEvent(AgentsAvailableEvent.class, (AgentsAvailableEvent e) -> {
-			System.out.println("	Moneypenny " + serial + ": AgentAvailableEvent -> " + e.getAgents().toString() + ""); //TODO: delete before submission
-
 			Map<String, Object> map = new HashMap<>();
 			map.put("serial", serial);
 			map.put("acquired", squad.getAgents(e.getAgents()) ? 1 : 0);
 			if(map.get("acquired").equals(0)){
 				map.put("future",null);
 				complete(e,map);
-			} //TODO Ofer : added now 24.12
+			}
 			else {
 				map.put("names", squad.getAgentsNames(e.getAgents())); //return a list of names (of agents)
-				Future<Boolean> isSend = new Future<>(); //TODO ALON: 23.12 NEW IMPLEMENTATION
+				Future<Boolean> isSend = new Future<>();
 				map.put("future", isSend);
-				System.out.println("	Moneypenny " + serial + ": AgentAvailableEvent -> " + e.getAgents().toString() + " result: " + map.get("acquired")); //TODO: delete before submission
 				complete(e, map); //finished checking AvailableAgentsEvent, continue to process whether send/ release:
 				if(isSend==null||((Future)map.get("future")).get()==null){
 					squad.releaseAgents(e.getAgents());
 					terminate();
-					System.out.println("Monneypenny "+serial+"is terminating because of M which terminated because of Q");
 				}
 				else if (isSend.get()){ //sendAgents or releaseAgents
-					System.out.println("	Moneypenny " + serial + ": SendAgents "+ e.getAgents().toString()  +" (and released automatically)"); //TODO: delete before submission
 					squad.sendAgents(e.getAgents(),e.getDuration());
 				} else {
-					System.out.println("	Moneypenny " + serial + ": ReleaseAgents " + e.getAgents().toString()  +" (without sending to mission)"); //TODO: delete before submission
 					squad.releaseAgents(e.getAgents());
 				}
 			}
@@ -102,27 +94,5 @@ public class Moneypenny extends Subscriber {
 	public int getSerial() {
 		return serial;
 	}
-
-	// TODO: check if necessary (not suppose to, because we changed impl) :
-//
-//	/**
-//	 * next 2 methods are private methods
-//	 * to make initialize() more readable
-//	 */
-//	private void subscribeReleaseAgentsEvent() {
-//		subscribeEvent(ReleaseAgentsEvent.class, (ReleaseAgentsEvent e) -> {
-//			System.out.println("Moneypenny " + serial + ": ReleaseAgentsEvent (without sending to mission)"); //TODO: delete before submission
-//			squad.releaseAgents(e.getAgents());
-//			complete(e, "ReleaseAgents -> executed");//TODO: ALON: 22.12 11:00
-//		});
-//	}
-//
-//	private void subscribeSendAgentsEvent() {
-//		subscribeEvent(SendAgentsEvent.class, (SendAgentsEvent e) -> {
-//			System.out.println("Moneypenny " + serial + ": SendAgentsEvent (and released automatically)"); //TODO: delete before submission
-//			squad.sendAgents(e.getAgents(), e.getDuration());
-//			complete(e, "SendAgents -> executed");//TODO: ALON: 22.12 11:00
-//
-//		});
 
 }

@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Diary {
 
-	//TODO ALON: some implements in 19.12, not finished
 	private List<Report> reports = new LinkedList<>();
 	private AtomicInteger total = new AtomicInteger(0);
 	//not sure if the right impl for the list
@@ -68,7 +67,6 @@ public class Diary {
 	 */
 	public void printToFile(String filename){
 		try {
-			System.out.println("	diary -> printToFile()"); //TODO: delete before submission
 			Writer writer = new FileWriter(filename);
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			gson.toJson(this,writer);

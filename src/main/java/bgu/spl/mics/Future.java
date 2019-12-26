@@ -47,7 +47,7 @@ public class Future<T> {
 		synchronized (this) {
 			if (result != null)
 				this.result = result;
-			this.isDone = true; //TODO ALON: 20.12, check if ok
+			this.isDone = true;
 			this.notifyAll();
 		}
 	}
@@ -57,7 +57,7 @@ public class Future<T> {
      */
 	public boolean isDone() {
 		return (this.isDone);
-	} //TODO ALON: 20.12 impl
+	}
 	
 	/**
      * retrieves the result the Future object holds if it has been resolved,
