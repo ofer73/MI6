@@ -10,25 +10,27 @@ public class TickBroadcast implements Broadcast {
     private final int tickNumber;
     private boolean isFinalTick;
 
+    /**
+     * constructor
+     * @param tickNumber : which tick is it
+     * @param isFinalTick : boolean represents if it is the final tick
+     */
+
     public TickBroadcast(int tickNumber, boolean isFinalTick) {
        this.tickNumber = tickNumber;
        this.isFinalTick = isFinalTick;
     }
 
+    /**
+     * @return if it is the final tick
+     */
+
     public boolean isFinalTick() { return isFinalTick; }
 
+    /**
+     * a getter
+     * @return number of tick
+     */
+
     public int getTickNumber() { return tickNumber; }
-//    private boolean isFinal;
-//
-//    public TickBroadcast(){ isFinal = false;}
-//
-//    /**
-//     *
-//     * @param isFinal
-//     */
-//    public TickBroadcast (boolean isFinal){
-//        this.isFinal = isFinal;
-//    }
-//
-//    public boolean isFinal() {return isFinal}
 }

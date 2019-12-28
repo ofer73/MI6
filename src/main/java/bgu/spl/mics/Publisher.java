@@ -12,7 +12,6 @@ package bgu.spl.mics;
  * <p>
  */
 public abstract class Publisher extends RunnableSubPub {
-    //simplePublisher is already a field in RSP
 
     /**
      * @param name the Publisher name (used mainly for debugging purposes -

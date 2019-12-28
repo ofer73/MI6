@@ -111,7 +111,6 @@ public abstract class Subscriber extends RunnableSubPub {
 
     @Override
     public final void run() {
-        //mb = MessageBrokerImpl.getInstance();
         mb.register(this);
         initialize();
         GlobalCounter.getInstance().increment();

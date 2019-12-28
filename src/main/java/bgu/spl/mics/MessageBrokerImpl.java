@@ -1,11 +1,5 @@
 package bgu.spl.mics;
 
-import bgu.spl.mics.application.messages.MissionReceivedEvent;
-import bgu.spl.mics.application.messages.ReleaseAgentsEvent;
-import bgu.spl.mics.application.messages.SendAgentsEvent;
-import bgu.spl.mics.application.subscribers.Moneypenny;
-
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -108,9 +102,7 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void unregister(Subscriber m) {
-		//update: it doesn't work now, need to be fixed
 
-		//synchronized (m) {
 			for (Class topic : myTopicsMap.get(m)) {
 				if (eventMap.containsKey(topic)) {
 					synchronized (eventMap.get(topic)) {//lock e's subscriber queue
@@ -136,7 +128,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			messageMap.remove(m); // delete m's message queue
 
 
-		//}
+
 	}
 
 	@Override

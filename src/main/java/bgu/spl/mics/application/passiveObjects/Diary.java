@@ -22,7 +22,6 @@ public class Diary {
 
 	private List<Report> reports = new LinkedList<>();
 	private AtomicInteger total = new AtomicInteger(0);
-	//not sure if the right impl for the list
 
 
 	/**

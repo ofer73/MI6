@@ -1,7 +1,5 @@
 package bgu.spl.mics.application.subscribers;
 
-import bgu.spl.mics.MessageBroker;
-import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.messages.GadgetAvailableEvent;
 import bgu.spl.mics.application.messages.TickBroadcast;
@@ -39,7 +37,6 @@ public class Q extends Subscriber {
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			if (tick.isFinalTick()) {
 				terminate();
-				//inv.printToFile("inventoryOutputFile.json");
 			} else {
 				currentTick = tick.getTickNumber();
 			}
@@ -47,7 +44,7 @@ public class Q extends Subscriber {
 		subscribeEvent(GadgetAvailableEvent.class,(GadgetAvailableEvent e)->{
 			Map<String,Integer> map=new HashMap<>();
 			map.put("timeTick", currentTick);
-			map.put("acquired", inv.getItem(e.getGadgetname()) ? 1 : 0);
+			map.put("acquired", inv.getItem(e.getGadgetName()) ? 1 : 0);
 			complete(e,map);
 			}
 		);

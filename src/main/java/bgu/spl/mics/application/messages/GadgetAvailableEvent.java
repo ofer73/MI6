@@ -4,14 +4,28 @@ import bgu.spl.mics.Event;
 
 import java.util.Map;
 
-public class GadgetAvailableEvent implements Event<Map<String,Integer>> {
-    private String gadgetname;
+/**
+ * an Event called by M, to check if a certain gadget is in inventory.
+ * if so, it will be taken automatically from inventory.
+ */
 
-    public GadgetAvailableEvent(String gadgetname) {
-        this.gadgetname = gadgetname;
+public class GadgetAvailableEvent implements Event<Map<String,Integer>> {
+    private String gadgetName;
+
+    /**
+     * constructor of the Event.
+     * @param gadgetName: name of the gadget
+     */
+
+    public GadgetAvailableEvent(String gadgetName) {
+        this.gadgetName = gadgetName;
     }
 
-    public String getGadgetname() {
-        return gadgetname;
+    /**
+     * @return the gadget's name
+     */
+
+    public String getGadgetName() {
+        return gadgetName;
     }
 }
