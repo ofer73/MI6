@@ -29,20 +29,15 @@ public class InventoryTest {
         assertFalse(inv.getItem("Flashlight"));
         assertFalse(inv.getItem(null));
     }
+    @Test
     public void testLoad() {
         String []toload1 = {"Goggles","GPS","Pistol"};
         String []toload2 = {"Knife","Cloack","Belt"};
-        String []toload3 = {"JackD","Watch"};
         inv.load(toload1);
         for(String e: toload1)
             assertTrue(inv.getItem(e));
         for(String e : toload2)
             assertFalse(inv.getItem(e));
-        for(String e : toload3)
-            assertFalse(null);
-
-
-
 
     }
 }

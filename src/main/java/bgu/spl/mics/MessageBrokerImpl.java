@@ -79,7 +79,6 @@ public class MessageBrokerImpl implements MessageBroker {
 				return null;
 			}
 
-//			synchronized (s) {
 				if (!messageMap.containsKey(s)) { //means no-one subscribed to solve such event
 					return null;
 				} else {
@@ -89,8 +88,6 @@ public class MessageBrokerImpl implements MessageBroker {
 					messageMap.get(s).offer(e);
 					return f;
 				}
-
-//			}
 		}
 	}
 

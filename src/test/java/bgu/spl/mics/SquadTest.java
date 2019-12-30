@@ -36,8 +36,9 @@ public class SquadTest {
         sq.load(agentArr);
         List<String> tmp = new ArrayList<>();
         tmp.add(ls.get(0));
+        agentArr[0].acquire();
         sq.releaseAgents(tmp);
-        assertFalse(sq.getAgents(ls));
+        assertTrue(sq.getAgents(ls));
     }
 
 
@@ -48,8 +49,8 @@ public class SquadTest {
         List<String> ls = cList(agentArr);
         sq.load(agentArr);
         List<String> tmp = new ArrayList<>();
-        sq.sendAgents(tmp, 300);
-        assertFalse(sq.getAgents(ls));
+        sq.sendAgents(tmp, 30);
+        assertTrue(sq.getAgents(ls));
     }
 
     private List<String> cList(Agent[] agentArr){

@@ -18,17 +18,21 @@ public class FutureTest {
         future.resolve(true);
        assertTrue(future.isDone());
     }
+    @Test
+
     public void test_Done(){
         assertFalse(future.isDone());
         future.resolve(false);
         assertTrue(future.isDone());
     }
+    @Test
     public void test_get(){
         future.resolve(true);
         assertTrue(future.get());
         future.resolve(false);
         assertFalse(future.get());
     }
+    @Test
     public void test_get_time(){
         Thread TT = new Thread(() -> future.resolve(false));
         TT.start();
