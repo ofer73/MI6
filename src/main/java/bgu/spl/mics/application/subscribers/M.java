@@ -44,7 +44,7 @@ public class M extends Subscriber {
 			MissionInfo info = e.getInfo();
 			diary.incrementTotal(); //incrementing whether it succeed or not
 
-			boolean isSucceed = false; //TODO ALON: added 22.12 11:00
+			boolean isSucceed = false;
 			while (true) { // while() is implemented in order to abort if something fails. only 1 iteration is executed
 
 				Future<Map<String,Object>> tryAcquireAgents = publish.sendEvent(new AgentsAvailableEvent(info.getSerialAgentsNumbers(),info.getDuration() ) );

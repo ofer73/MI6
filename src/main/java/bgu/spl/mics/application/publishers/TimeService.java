@@ -25,7 +25,7 @@ public class TimeService extends Publisher {
 	}
 
 	@Override
-	protected void initialize() { //TODO:check if ok its empty
+	protected void initialize() {
 	}
 
 	@Override

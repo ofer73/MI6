@@ -36,8 +36,6 @@ public class Moneypenny extends Subscriber {
 	private void subscribeOriginal() {
 		subscribeTickBroadcast();
 		subscribeAgentAvailableEvent();
-		//subscribeSendAgentsEvent();
-		//subscribeReleaseAgentsEvent();
 	}
 
 

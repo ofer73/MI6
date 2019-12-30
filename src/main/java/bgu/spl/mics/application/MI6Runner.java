@@ -68,7 +68,6 @@ public class MI6Runner {
 
                       try {
                         globalCounter.wait();
-                        //sleep(100);
                         }
                       catch (InterruptedException e) {
 
@@ -77,7 +76,7 @@ public class MI6Runner {
            }
 
            //init TimeService
-           Thread timeService = new Thread(new TimeService(time)); //TODO: check is right
+           Thread timeService = new Thread(new TimeService(time));
            timeService.start();
 
 
